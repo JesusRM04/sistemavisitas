@@ -1,10 +1,10 @@
 <?php
-//include ('../app/config.php');
-//include ('../layout/sesion.php');
+include ('../app/config.php');
+include ('../layout/sesion.php');
 
 include ('../layout/parte1.php');
 
-//include ('../app/controllers/roles/update_roles.php');
+include ('../app/controllers/roles/update_roles.php');
 
 ?>
 
@@ -47,7 +47,7 @@ include ('../layout/parte1.php');
                                             <input type="text" name="id_rol" value="<?php echo $id_rol_get;?>" hidden>
                                             <label for="">Nombre del Rol</label>
                                             <input type="text" name="rol" class="form-control"
-                                                   placeholder="Escriba aquí el Rol..." value="<?php echo $rol;?>" required>
+                                                   placeholder="Escriba aquí el Rol..." value="<?php echo $nombre_rol;?>" required>
                                         </div>
                                         <hr>
                                         <div class="form-group">

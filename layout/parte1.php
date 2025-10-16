@@ -96,7 +96,7 @@
               <!-- Message Start -->
               <div class="media">
                 <img
-                  src="public/templeates/AdminLTE-3.2.0/dist/img/user1-128x128.jpg"
+                  src=""
                   alt="User Avatar"
                   class="img-size-50 mr-3 img-circle" />
                 <div class="media-body">
@@ -117,7 +117,7 @@
               <!-- Message Start -->
               <div class="media">
                 <img
-                  src="public/templeates/AdminLTE-3.2.0/dist/img/user8-128x128.jpg"
+                  src=""
                   alt="User Avatar"
                   class="img-size-50 img-circle mr-3" />
                 <div class="media-body">
@@ -138,7 +138,7 @@
               <!-- Message Start -->
               <div class="media">
                 <img
-                  src="public/templeates/AdminLTE-3.2.0/dist/img/user3-128x128.jpg"
+                  src=""
                   alt="User Avatar"
                   class="img-size-50 img-circle mr-3" />
                 <div class="media-body">
@@ -210,10 +210,10 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Logo -->
       <a
-        href="../index.php"
+        href="<?php echo $URL;?>"
         class="brand-link">
         <img
-          src="public/images/infoteclogo.png"
+          src="<?php echo $URL;?>/public/images/infoteclogo.png"
           alt="Logo"
           class="brand-image img-circle elevation-3"
           style="opacity: 0.8" />
@@ -226,12 +226,12 @@
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
             <img
-              src="public/images/user.png"
+              src="<?php echo $URL;?>/public/images/user.png"
               class="img-circle elevation-2"
               alt="User Image" />
           </div>
           <div class="info">
-            <a href="#" class="d-block"><b>Usuario</b></a>
+            <a href="#" class="d-block"><b><?php echo $nombres_sesion;?></b></a>
           </div>
         </div>
 
@@ -269,13 +269,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="../usuarios" class="nav-link">
+                  <a href="<?php echo $URL;?>/usuarios" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Listado de Usuarios</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="../usuarios/create.php" class="nav-link">
+                  <a href="<?php echo $URL;?>/usuarios/create.php" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Creación de Usuarios</p>
                   </a>
@@ -294,13 +294,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="../roles" class="nav-link">
+                  <a href="<?php echo $URL;?>/roles" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Listado de Roles</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="../roles/create.php" class="nav-link">
+                  <a href="<?php echo $URL;?>/roles/create.php" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Creación de Roles</p>
                   </a>
@@ -319,7 +319,7 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="../areas/index.php" class="nav-link">
+                  <a href="<?php echo $URL;?>/areas/index.php" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Listado de Áreas</p>
                   </a>
@@ -354,7 +354,7 @@
 
             <!-- Cerrar Sesión -->
             <li class="nav-item">
-              <a href="#" class="nav-link" style="background-color: #611232;">
+              <a href="<?php echo $URL;?>/app/controllers/login/cerrar_sesion.php" class="nav-link" style="background-color: #611232;">
                 <i class="nav-icon fas fa-door-closed" style="color: white;"></i>
                 <p style="color: white;">
                   Cerrar Sesión

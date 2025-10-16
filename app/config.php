@@ -1,28 +1,20 @@
 <?php
-// Dirección base de tu API Python
-$API_BASE = "http://127.0.0.1:8000";
+$SERVIDOR = "localhost";
+$PORT = "5432";
+$USUARIO = "admininfotec";
+$PASSWORD = "InfotecAdmi1.";
+$BD = "sisvisitas";
 
-// Intentar conexión
+$dsn = "pgsql:host=$SERVIDOR;port=$PORT;dbname=$BD";
+
 try {
-    $ch = curl_init($API_BASE . "/users");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($ch);
-    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-    if (curl_errno($ch)) {
-        // Error de conexión
-        throw new Exception("Error de conexión con la API: " . curl_error($ch));
-    }
-
-    curl_close($ch);
-
-    if ($http_code == 200) {
-        echo "✅ Conexión exitosa con la API de Python";
-    } else {
-        echo "❌ Error al conectar. Código HTTP: " . $http_code . "<br>";
-        echo "Respuesta: " . $response;
-    }
-
-} catch (Exception $e) {
-    echo "❌ Error: " . $e->getMessage();
+    $pdo = new PDO($dsn, $USUARIO, $PASSWORD);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->exec("SET NAMES 'UTF8'");
+    //echo "La conexión a la base de datos fue con éxito";
+} catch (PDOException $e) {
+    echo "Error de conexión: " . $e->getMessage();
 }
+
+
+$URL = "/sistemavisitas";

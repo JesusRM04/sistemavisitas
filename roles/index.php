@@ -1,11 +1,11 @@
 <?php
-/*include ('../app/config.php');
-include ('../layout/sesion.php');*/
+include('../app/config.php');
+include('../layout/sesion.php');
 
-include ('../layout/parte1.php');
+include('../layout/parte1.php');
 
 
-//include ('../app/controllers/roles/listado_de_roles.php');
+include('../app/controllers/roles/listado_de_roles.php');
 
 
 ?>
@@ -44,40 +44,41 @@ include ('../layout/parte1.php');
                         <div class="card-body" style="display: block;">
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
-                                <tr>
-                                    <th><center>Nro</center></th>
-                                    <th><center>Nombre del Rol</center></th>
-                                    <th><center>Acciones</center></th>
-                                </tr>
+                                    <tr>
+                                        <th>
+                                            <center>ID Rol</center>
+                                        </th>
+                                        <th>
+                                            <center>Nombre del Rol</center>
+                                        </th>
+                                        <th>
+                                            <center>Acciones</center>
+                                        </th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <?php
-                                $contador = 0;
-                                foreach ($roles_datos as $roles_dato){
-                                    $id_rol = $roles_dato['id_rol']; ?>
-                                    <tr>
-                                        <td><center><?php echo $contador = $contador + 1;?></center></td>
-                                        <td><?php echo $roles_dato['rol'];?></td>
-                                        <td>
-                                            <center>
-                                                <div class="btn-group">
-                                                    <a href="update.php?id=<?php echo $id_rol; ?>" type="button" class="btn btn-success">
-                                                        <i class="fa fa-pencil-alt"></i> Editar</a>
-                                                </div>
-                                            </center>
-                                        </td>
-                                    </tr>
                                     <?php
-                                }
-                                ?>
+                                    $contador = 0;
+                                    foreach ($roles_datos as $roles_dato) {
+                                        $id_rol = $roles_dato['id_rol']; ?>
+                                        <tr>
+                                            <td>
+                                                <center><?php echo $contador = $contador + 1; ?></center>
+                                            </td>
+                                            <td><?php echo $roles_dato['nombre_rol']; ?></td>
+                                            <td>
+                                                <center>
+                                                    <div class="btn-group">
+                                                        <a href="update.php?id=<?php echo $id_rol; ?>" type="button" class="btn btn-success">
+                                                            <i class="fa fa-pencil-alt"></i> Editar</a>
+                                                    </div>
+                                                </center>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
                                 </tbody>
-                                <tfoot>
-                                <tr>
-                                    <th><center>Nro</center></th>
-                                    <th><center>Nombre del rol</center></th>
-                                    <th><center>Acciones</center></th>
-                                </tr>
-                                </tfoot>
                             </table>
                         </div>
 
@@ -93,12 +94,12 @@ include ('../layout/parte1.php');
 <!-- Fin Contenedor Principal -->
 
 
-<?php include ('../layout/mensajes.php'); ?>
-<?php include ('../layout/parte2.php'); ?>
+<?php include('../layout/mensajes.php'); ?>
+<?php include('../layout/parte2.php'); ?>
 
 <!-- Script para el funcionamiento de la tabla de roles -->
 <script>
-    $(function () {
+    $(function() {
         $("#example1").DataTable({
             "pageLength": 5,
             "language": {
@@ -120,26 +121,38 @@ include ('../layout/parte1.php');
                     "previous": "Anterior"
                 }
             },
-            "responsive": true, "lengthChange": true, "autoWidth": false,
+            "responsive": true,
+            "lengthChange": true,
+            "autoWidth": false,
             buttons: [{
-                extend: 'collection',
-                text: 'Reportes',
-                orientation: 'landscape',
-                buttons: [{
-                    text: 'Copiar',
-                    extend: 'copy',
-                }, {
-                    extend: 'pdf'
-                },{
-                    extend: 'csv'
-                },{
-                    extend: 'excel'
-                },{
-                    text: 'Imprimir',
-                    extend: 'print'
-                }
-                ]
-            },
+                    extend: 'collection',
+                    text: 'Reportes',
+                    orientation: 'landscape',
+                    buttons: [{
+                        text: 'Copiar',
+                        title: 'Reporte Roles',
+                        extend: 'copy',
+                    }, {
+                        extend: 'pdf',
+                        title: 'Reporte Roles'
+                    }, {
+                        extend: 'csv',
+                        title: 'Reporte Roles'
+                    }, {
+                        extend: 'excel',
+                        title: 'Reporte Roles',
+                        exportOptions: {
+                            columns: [0, 1] // Solo exporta las dos primeras columnas
+                        }
+                    }, {
+                        text: 'Imprimir',
+                        extend: 'print',
+                        title: 'Reporte Roles',
+                        exportOptions: {
+                            columns: [0, 1] // Solo exporta las dos primeras columnas
+                        }
+                    }]
+                },
                 {
                     extend: 'colvis',
                     text: 'Visor de columnas',

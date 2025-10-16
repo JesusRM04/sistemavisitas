@@ -1,10 +1,10 @@
 <?php
-/*include ('../app/config.php');
-include ('../layout/sesion.php');*/
+include ('../app/config.php');
+include ('../layout/sesion.php');
 
 include ('../layout/parte1.php');
 
-//include ('../app/controllers/roles/listado_de_roles.php');
+include ('../app/controllers/roles/listado_de_roles.php');
 ?>
 
 <!-- Content Wrapper. Contains page content -->

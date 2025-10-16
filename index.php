@@ -1,7 +1,18 @@
 <!--Hola Mundo-->
 <?php
-include('./layout/parte1.php') //Llamamos a la parte 1 la cual contiene el navbar y el menú lateral izquierdo
+include('./app/config.php');
+include ('layout/sesion.php');
 
+include('./layout/parte1.php'); //Llamamos a la parte 1 la cual contiene el navbar y el menú lateral izquierdo
+
+//include ('app/controllers/usuarios/listado_de_usuarios.php');
+include ('app/controllers/roles/listado_de_roles.php');
+//include ('app/controllers/categorias/listado_de_categoria.php');
+//include ('app/controllers/almacen/listado_de_productos.php');
+//include ('app/controllers/proveedores/listado_de_proveedores.php');
+//include ('app/controllers/compras/listado_de_compras.php');
+//include ('app/controllers/ventas/listado_de_ventas.php');
+//include ('app/controllers/clientes/listado_de_clientes.php');
 ?>
 <!-- Contenedor Principal (contiene el contenido de la página) -->
 <div class="content-wrapper">
@@ -10,15 +21,10 @@ include('./layout/parte1.php') //Llamamos a la parte 1 la cual contiene el navba
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Información del Sistema</h1>
+          <h4 class="m-0"><?php echo $rol_sesion; ?></h4>
         </div>
         <!-- Fin Primer Columna -->
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-            <li class="breadcrumb-item active">Página Principal</li>
-          </ol>
-        </div>
+        
         <!-- Fin Segunda Columna -->
       </div>
       <!-- Fin Primera Fila -->
@@ -57,7 +63,13 @@ include('./layout/parte1.php') //Llamamos a la parte 1 la cual contiene el navba
         <div class="col-lg-3 col-6">
           <div class="small-box" style="background-color: #b89457; color: white">
             <div class="inner">
-              <h3>N</h3>
+              <?php
+              $contador_de_roles = 0;
+              foreach ($roles_datos as $roles_dato) {
+                $contador_de_roles = $contador_de_roles + 1;
+              }
+              ?>
+              <h3><?php echo $contador_de_roles;?></h3>
               <p>Roles Registrados</p>
             </div>
             <a href="./roles">
@@ -126,4 +138,4 @@ include('./layout/parte1.php') //Llamamos a la parte 1 la cual contiene el navba
 <!-- Fin Control Sidebar Derecho -->
 
 <!--Mandamos a llamar a parte2.php que contiene el footer-->
-<?php include ('./layout/parte2.php'); ?>
+<?php include('./layout/parte2.php'); ?>

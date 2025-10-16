@@ -1,11 +1,11 @@
 <?php
-/*include ('../app/config.php');
-include ('../layout/sesion.php');*/
+include ('../app/config.php');
+include ('../layout/sesion.php');
 
 include ('../layout/parte1.php');
 
 
-/*include ('../app/controllers/usuarios/listado_de_usuarios.php');*/
+include ('../app/controllers/usuarios/listado_de_usuarios.php');
 
 
 ?>
@@ -45,10 +45,11 @@ include ('../layout/parte1.php');
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <th><center>Nro</center></th>
-                                    <th><center>Nombres</center></th>
-                                    <th><center>Email</center></th>
-                                    <th><center>Rol del usuario</center></th>
+                                    <th><center>ID Usuario</center></th>
+                                    <th><center>Nombre</center></th>
+                                    <th><center>Correo</center></th>
+                                    <th><center>Rol del Usuario</center></th>
+                                    <th><center>Extensión</center></th>
                                     <th><center>Acciones</center></th>
                                 </tr>
                                 </thead>
@@ -62,6 +63,7 @@ include ('../layout/parte1.php');
                                         <td><?php echo $usuarios_dato['nombres'];?></td>
                                         <td><?php echo $usuarios_dato['email'];?></td>
                                         <td><center><?php echo $usuarios_dato['rol'];?></center></td>
+                                        <td><center><?php echo $usuarios_dato['extension'];?></center></td>
                                         <td>
                                             <center>
                                                 <div class="btn-group">
@@ -97,7 +99,7 @@ include ('../layout/parte1.php');
 
 <!-- Script para el funcionamiento de la tabla de usuarios -->
 <script>
-    $(function () {
+    $(function() {
         $("#example1").DataTable({
             "pageLength": 5,
             "language": {
@@ -119,26 +121,47 @@ include ('../layout/parte1.php');
                     "previous": "Anterior"
                 }
             },
-            "responsive": true, "lengthChange": true, "autoWidth": false,
+            "responsive": true,
+            "lengthChange": true,
+            "autoWidth": false,
             buttons: [{
-                extend: 'collection',
-                text: 'Reportes',
-                orientation: 'landscape',
-                buttons: [{
-                    text: 'Copiar',
-                    extend: 'copy',
-                }, {
-                    extend: 'pdf'
-                },{
-                    extend: 'csv'
-                },{
-                    extend: 'excel'
-                },{
-                    text: 'Imprimir',
-                    extend: 'print'
-                }
-                ]
-            },
+                    extend: 'collection',
+                    text: 'Reportes',
+                    orientation: 'landscape',
+                    buttons: [{
+                        text: 'Copiar',
+                        title: 'Reporte Usuarios',
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4] // Solo exporta las dos primeras columnas
+                        }
+                    }, {
+                        extend: 'pdf',
+                        title: 'Reporte Usuarios',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4] // Solo exporta las dos primeras columnas
+                        }
+                    }, {
+                        extend: 'csv',
+                        title: 'Reporte Usuarios',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4] // Solo exporta las dos primeras columnas
+                        }
+                    }, {
+                        extend: 'excel',
+                        title: 'Reporte Usuarios',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4] // Solo exporta las 4 primeras columnas
+                        }
+                    }, {
+                        text: 'Imprimir',
+                        extend: 'print',
+                        title: 'Reporte Usuarios',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4] // Solo exporta las dos primeras columnas
+                        }
+                    }]
+                },
                 {
                     extend: 'colvis',
                     text: 'Visor de columnas',
