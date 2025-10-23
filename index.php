@@ -125,6 +125,25 @@ include('app/controllers/roles/listado_de_roles.php');
           </div>
         </div>
       </div>
+
+      <!-- Tarjeta Delegados -->
+        <div class="col-lg-3 col-6">
+          <div class="small-box" style="background-color: #611232; color: white">
+            <div class="inner">
+              <h3>N</h3>
+              <p>Delegados Registrados</p>
+            </div>
+            <a href="">
+              <div class="icon">
+                <i class="fas fa-person-dress" style="color: white;"></i>
+              </div>
+            </a>
+            <a href="#" class="small-box-footer">
+              Más detalle <i class="fas fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
       <!-- /.row -->
     </div>
     <!-- /.container-fluid -->

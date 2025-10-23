@@ -351,10 +351,34 @@
                 </li>
               </ul>
             </li>
+            <!-- Apartado Delegados -->
+            <li class="nav-item">
+              <a href="#" class="nav-link active" style="background-color: #611232;">
+                <i class="nav-icon fas fa-person-dress"></i>
+                <p>
+                  Delegados
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Listado de Delegados</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Creación de Delegados</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
 
             <!-- Cerrar Sesión -->
             <li class="nav-item">
-              <a href="<?php echo $URL;?>/app/controllers/login/cerrar_sesion.php" class="nav-link" style="background-color: #611232;">
+              <a href="<?php echo $URL;?>/app/controllers/login/cerrar_sesion.php" class="nav-link" style="background-color: #b89457;">
                 <i class="nav-icon fas fa-door-closed" style="color: white;"></i>
                 <p style="color: white;">
                   Cerrar Sesión
