@@ -51,7 +51,7 @@ include ('../app/controllers/roles/listado_de_roles.php');
                                                         <i class="fas fa-keyboard"></i>
                                                     </span>
                                                 </div>
-                                                <input type="text" name="nombres" class="form-control" placeholder="Escriba aquí el nombre del Nuevo Usuario..." required>
+                                                <input type="text" name="nombre" class="form-control" placeholder="Escriba aquí el nombre del Nuevo Usuario..." required>
                                             </div>                    
                                         </div>
                                         <!-- Input Email -->
@@ -63,7 +63,7 @@ include ('../app/controllers/roles/listado_de_roles.php');
                                                         <i class="fas fa-envelope"></i>
                                                     </span>
                                                 </div>
-                                                <input type="email" name="email" class="form-control" placeholder="Escriba aquí el correo del Nuevo Usuario..." required>
+                                                <input type="email" name="correo" class="form-control" placeholder="Escriba aquí el correo del Nuevo Usuario..." required>
                                             </div>
                                         </div>
                                         <!-- Input Telefono -->
@@ -75,7 +75,7 @@ include ('../app/controllers/roles/listado_de_roles.php');
                                                         <i class="fas fa-phone"></i>
                                                     </span>
                                                 </div>
-                                                <input type="number" name="telusuario" class="form-control" placeholder="Escriba aquí el teléfono del Nuevo Usuario..." required>
+                                                <input type="number" name="extension" class="form-control" placeholder="Escriba aquí el teléfono del Nuevo Usuario..." required>
                                             </div>
                                         </div>
                                         <!-- Input Rol de Usuario -->
@@ -91,7 +91,7 @@ include ('../app/controllers/roles/listado_de_roles.php');
                                                     <option value="" disabled selected>Seleccione el Rol del Nuevo Usuario...</option>
                                                     <?php
                                                     foreach ($roles_datos as $roles_dato){?>
-                                                        <option value="<?php echo $roles_dato['id_rol'];?>"><?php echo $roles_dato['rol'];?></option>
+                                                        <option value="<?php echo $roles_dato['id_rol'];?>"><?php echo $roles_dato['nombre_rol'];?></option>
                                                     <?php
                                                     }
                                                     ?>
@@ -107,7 +107,7 @@ include ('../app/controllers/roles/listado_de_roles.php');
                                                         <i class="fas fa-key"></i>
                                                     </span>
                                                 </div>
-                                                <input type="text" name="password_user" class="form-control" placeholder="Escriba aquí la contraseña del Nuevo Usuario..." required>
+                                                <input type="text" name="contrasena" class="form-control" placeholder="Escriba aquí la contraseña del Nuevo Usuario..." required>
                                             </div>
                                         </div>
                                         <!-- Input Repetir Contraseña -->

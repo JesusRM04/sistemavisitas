@@ -16,5 +16,8 @@ try {
     echo "Error de conexión: " . $e->getMessage();
 }
 
-
 $URL = "/sistemavisitas";
+
+//Definir zona horaria para las fechas
+date_default_timezone_set("America/Mexico_City");
+$fechaHora = date('Y-m-d H:i:s');

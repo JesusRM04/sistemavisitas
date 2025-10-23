@@ -9,7 +9,7 @@ $nombre_rol = $_POST['rol'];
     SET nombre_rol=:nombre_rol
     WHERE id_rol = :id_rol ");
 
-        $sentencia->bindParam('rol',$nombre_rol);
+        $sentencia->bindParam('nombre_rol',$nombre_rol);
         //$sentencia->bindParam('fyh_actualizacion',$fechaHora);
         $sentencia->bindParam('id_rol',$id_rol);
         if($sentencia->execute()){

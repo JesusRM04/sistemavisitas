@@ -231,7 +231,7 @@
               alt="User Image" />
           </div>
           <div class="info">
-            <a href="#" class="d-block"><b><?php echo $nombres_sesion;?></b></a>
+            <a href="#" class="d-block"><b style="font-size: 12px;"><?php echo $nombres_sesion;?></b></a>
           </div>
         </div>
 

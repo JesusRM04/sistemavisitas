@@ -1,12 +1,12 @@
 <!--Hola Mundo-->
 <?php
 include('./app/config.php');
-include ('layout/sesion.php');
+include('layout/sesion.php');
 
 include('./layout/parte1.php'); //Llamamos a la parte 1 la cual contiene el navbar y el menú lateral izquierdo
 
-//include ('app/controllers/usuarios/listado_de_usuarios.php');
-include ('app/controllers/roles/listado_de_roles.php');
+include('app/controllers/usuarios/listado_de_usuarios.php');
+include('app/controllers/roles/listado_de_roles.php');
 //include ('app/controllers/categorias/listado_de_categoria.php');
 //include ('app/controllers/almacen/listado_de_productos.php');
 //include ('app/controllers/proveedores/listado_de_proveedores.php');
@@ -21,10 +21,10 @@ include ('app/controllers/roles/listado_de_roles.php');
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h4 class="m-0"><?php echo $rol_sesion; ?></h4>
+          <h4 class="m-0">ROL - <?php echo $rol_sesion; ?></h4>
         </div>
         <!-- Fin Primer Columna -->
-        
+
         <!-- Fin Segunda Columna -->
       </div>
       <!-- Fin Primera Fila -->
@@ -42,7 +42,13 @@ include ('app/controllers/roles/listado_de_roles.php');
         <div class="col-lg-3 col-6">
           <div class="small-box" style="background-color: #611232;">
             <div class="inner" style="color: white">
-              <h3>N</h3>
+              <?php
+              $contador_de_usuarios = 0;
+              foreach ($usuarios_datos as $usuarios_dato) {
+                $contador_de_usuarios = $contador_de_usuarios + 1;
+              }
+              ?>
+              <h3><?php echo $contador_de_usuarios;?></h3>
               <p style="color: white">Usuarios Registrados</p>
             </div>
             <a href="./usuarios">
@@ -69,7 +75,7 @@ include ('app/controllers/roles/listado_de_roles.php');
                 $contador_de_roles = $contador_de_roles + 1;
               }
               ?>
-              <h3><?php echo $contador_de_roles;?></h3>
+              <h3><?php echo $contador_de_roles; ?></h3>
               <p>Roles Registrados</p>
             </div>
             <a href="./roles">
