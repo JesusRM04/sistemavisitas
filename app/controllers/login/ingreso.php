@@ -18,7 +18,7 @@ if(count($usuarios) > 0){
     // Verificar que el usuario esté activo
     if($usuario['activo'] == true){
         // Verificar la contraseña
-        if($password_user === $usuario['contrasena']){          //No olvidar volver a poner el verify -- if(password_verify($password_user, $usuario['contrasena']))
+        if(password_verify($password_user, $usuario['contrasena'])){          //No olvidar volver a poner el verify -- if(password_verify($password_user, $usuario['contrasena']))
             echo "Datos correctos";
             session_start();
             $_SESSION['sesion_email'] = $usuario['correo'];

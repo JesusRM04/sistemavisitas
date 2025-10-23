@@ -5,7 +5,7 @@ include ('../layout/sesion.php');
 include('../layout/parte1.php');
 
 
-//include ('../app/controllers/categorias/listado_de_categoria.php');
+//include ('../app/controllers/areas/listado_de_areas.php');
 
 
 ?>
