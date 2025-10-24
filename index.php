@@ -7,9 +7,9 @@ include('./layout/parte1.php'); //Llamamos a la parte 1 la cual contiene el navb
 
 include('app/controllers/usuarios/listado_de_usuarios.php');
 include('app/controllers/roles/listado_de_roles.php');
-//include ('app/controllers/categorias/listado_de_categoria.php');
+include ('app/controllers/areas/listado_de_areas.php');
 //include ('app/controllers/almacen/listado_de_productos.php');
-//include ('app/controllers/proveedores/listado_de_proveedores.php');
+include ('app/controllers/delegados/listado_de_delegados.php');
 //include ('app/controllers/compras/listado_de_compras.php');
 //include ('app/controllers/ventas/listado_de_ventas.php');
 //include ('app/controllers/clientes/listado_de_clientes.php');
@@ -93,15 +93,21 @@ include('app/controllers/roles/listado_de_roles.php');
         <div class="col-lg-3 col-6">
           <div class="small-box" style="background-color: #611232; color: white">
             <div class="inner">
-              <h3>N</h3>
+              <?php
+              $contador_de_areas = 0;
+              foreach ($areas_datos as $areas_dato) {
+                $contador_de_areas = $contador_de_areas + 1;
+              }
+              ?>
+              <h3><?php echo $contador_de_areas; ?></h3>
               <p>Áreas Registradas</p>
             </div>
-            <a href="./areas/index.php">
+            <a href="./areas">
               <div class="icon">
                 <i class="fas fa-map" style="color: white;"></i>
               </div>
             </a>
-            <a href="./areas/index.php" class="small-box-footer">
+            <a href="./areas" class="small-box-footer">
               Más detalle <i class="fas fa-arrow-circle-right"></i>
             </a>
           </div>
@@ -130,15 +136,21 @@ include('app/controllers/roles/listado_de_roles.php');
         <div class="col-lg-3 col-6">
           <div class="small-box" style="background-color: #611232; color: white">
             <div class="inner">
-              <h3>N</h3>
+              <?php
+              $contador_de_delegados = 0;
+              foreach ($delegados_datos as $delegados_dato) {
+                $contador_de_delegados = $contador_de_delegados + 1;
+              }
+              ?>
+              <h3><?php echo $contador_de_delegados; ?></h3>
               <p>Delegados Registrados</p>
             </div>
-            <a href="">
+            <a href="./delegados">
               <div class="icon">
-                <i class="fas fa-person-dress" style="color: white;"></i>
+                <i class="fas fa-user-tie" style="color: white;"></i>
               </div>
             </a>
-            <a href="#" class="small-box-footer">
+            <a href="./delegados" class="small-box-footer">
               Más detalle <i class="fas fa-arrow-circle-right"></i>
             </a>
           </div>
@@ -147,7 +159,6 @@ include('app/controllers/roles/listado_de_roles.php');
       <!-- /.row -->
     </div>
     <!-- /.container-fluid -->
-  </div>
   <!-- Fin Contenido Principal -->
 </div>
 <!-- Fin Contenedor Principal -->

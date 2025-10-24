@@ -65,7 +65,7 @@ include('../app/controllers/roles/listado_de_roles.php');
                                             <td>
                                                 <center><?php echo $contador = $contador + 1; ?></center>
                                             </td>
-                                            <td><?php echo $roles_dato['nombre_rol']; ?></td>
+                                            <td><center><?php echo $roles_dato['nombre_rol']; ?></center></td>
                                             <td>
                                                 <center>
                                                     <div class="btn-group">

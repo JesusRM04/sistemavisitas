@@ -4,7 +4,6 @@ include ('../layout/sesion.php');
 
 include ('../layout/parte1.php');
 
-include ('../app/controllers/roles/listado_de_roles.php');
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -14,7 +13,7 @@ include ('../app/controllers/roles/listado_de_roles.php');
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <h1 class="m-0">Registrar Nuevo Usuario</h1>
+                    <h1 class="m-0">Registrar Nuevo Delegado</h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -30,7 +29,7 @@ include ('../app/controllers/roles/listado_de_roles.php');
                 <div class="col-md-8">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">INGRESE LOS DATOS DEL NUEVO USUARIO</h3>
+                            <h3 class="card-title">INGRESE LOS DATOS DEL DELEGADO</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
                                 </button>
@@ -41,7 +40,7 @@ include ('../app/controllers/roles/listado_de_roles.php');
                         <div class="card-body" style="display: block;">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form action="../app/controllers/usuarios/create.php" method="post">
+                                    <form action="../app/controllers/delegados/create.php" method="post">
                                         <!-- Input Nombres -->
                                         <div class="form-group">
                                             <label for="">Nombre Completo</label>
@@ -51,7 +50,7 @@ include ('../app/controllers/roles/listado_de_roles.php');
                                                         <i class="fas fa-keyboard"></i>
                                                     </span>
                                                 </div>
-                                                <input type="text" name="nombre" class="form-control" placeholder="Escriba aquí el nombre del Nuevo Usuario..." required>
+                                                <input type="text" name="nombre" class="form-control" placeholder="Escriba aquí el nombre del Nuevo Delegado..." required>
                                             </div>                    
                                         </div>
                                         <!-- Input Email -->
@@ -63,7 +62,7 @@ include ('../app/controllers/roles/listado_de_roles.php');
                                                         <i class="fas fa-envelope"></i>
                                                     </span>
                                                 </div>
-                                                <input type="email" name="correo" class="form-control" placeholder="Escriba aquí el correo del Nuevo Usuario..." required>
+                                                <input type="email" name="correo" class="form-control" placeholder="Escriba aquí el correo del Nuevo Delegado..." required>
                                             </div>
                                         </div>
                                         <!-- Input Telefono -->
@@ -75,51 +74,7 @@ include ('../app/controllers/roles/listado_de_roles.php');
                                                         <i class="fas fa-phone"></i>
                                                     </span>
                                                 </div>
-                                                <input type="number" name="extension" class="form-control" placeholder="Escriba aquí el teléfono del Nuevo Usuario..." required>
-                                            </div>
-                                        </div>
-                                        <!-- Input Rol de Usuario -->
-                                        <div class="form-group">
-                                            <label for="">Rol del Usuario</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="fas fa-user"></i>
-                                                    </span>
-                                                </div>
-                                                <select name="rol" id="" class="form-control">
-                                                    <option value="" disabled selected>Seleccione el Rol del Nuevo Usuario...</option>
-                                                    <?php
-                                                    foreach ($roles_datos as $roles_dato){?>
-                                                        <option value="<?php echo $roles_dato['id_rol'];?>"><?php echo $roles_dato['nombre_rol'];?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <!-- Input Contraseña -->
-                                        <div class="form-group">
-                                            <label for="">Contraseña</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="fas fa-key"></i>
-                                                    </span>
-                                                </div>
-                                                <input type="text" name="contrasena" class="form-control" placeholder="Escriba aquí la contraseña del Nuevo Usuario..." required>
-                                            </div>
-                                        </div>
-                                        <!-- Input Repetir Contraseña -->
-                                        <div class="form-group">
-                                            <label for="">Repita la Contraseña</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="fas fa-key"></i>
-                                                    </span>
-                                                </div>
-                                                <input type="text" name="password_repeat" class="form-control" placeholder="Repita la contraseña del Nuevo Usuario..." required>
+                                                <input type="number" name="ext" class="form-control" placeholder="Escriba aquí la Extensión de Teléfono del Nuevo Delegado..." required>
                                             </div>
                                         </div>
                                         <hr>

@@ -5,7 +5,7 @@ include ('../layout/sesion.php');
 include('../layout/parte1.php');
 
 
-//include ('../app/controllers/areas/listado_de_areas.php');
+include ('../app/controllers/areas/listado_de_areas.php');
 
 
 ?>
@@ -63,23 +63,23 @@ include('../layout/parte1.php');
                                 <tbody>
                                     <?php
                                     $contador = 0;
-                                    foreach ($categorias_datos as $categorias_dato) {
-                                        $id_categoria = $categorias_dato['id_categoria'];
-                                        $nombre_categoria = $categorias_dato['nombre_categoria']; ?>
+                                    foreach ($areas_datos as $areas_dato) {
+                                        $id_area = $areas_dato['id_area'];
+                                        $nombre_area = $areas_dato['nombre_area']; ?>
                                         <tr>
                                             <td>
                                                 <center><?php echo $contador = $contador + 1; ?></center>
                                             </td>
-                                            <td><?php echo $categorias_dato['nombre_categoria']; ?></td>
+                                            <td><center><?php echo $areas_dato['nombre_area']; ?></center></td>
                                             <td>
                                                 <center>
                                                     <div class="btn-group">
                                                         <button type="button" class="btn btn-success" data-toggle="modal"
-                                                            data-target="#modal-update<?php echo $id_categoria; ?>">
+                                                            data-target="#modal-update<?php echo $id_area; ?>">
                                                             <i class="fa fa-pencil-alt"></i> Editar
                                                         </button>
                                                         <!-- Modal para Actualizar Área -->
-                                                        <div class="modal fade" id="modal-update<?php echo $id_categoria; ?>">
+                                                        <div class="modal fade" id="modal-update<?php echo $id_area; ?>">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header" style="background-color: #116f4a;color: white">
@@ -93,15 +93,15 @@ include('../layout/parte1.php');
                                                                             <div class="col-md-12">
                                                                                 <div class="form-group">
                                                                                     <label for="">Nombre de Área</label>
-                                                                                    <input type="text" id="nombre_categoria<?php echo $id_categoria; ?>" value="<?php echo $nombre_categoria; ?>" class="form-control">
-                                                                                    <small style="color: red;display: none" id="lbl_update<?php echo $id_categoria; ?>">* Este campo es requerido</small>
+                                                                                    <input type="text" id="nombre_area<?php echo $id_area; ?>" value="<?php echo $nombre_area; ?>" class="form-control" required>
+                                                                                    <small style="color: red;display: none" id="lbl_update<?php echo $id_area; ?>">* Este campo es requerido</small>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="modal-footer justify-content-between">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                                        <button type="button" class="btn btn-success" id="btn_update<?php echo $id_categoria; ?>">Actualizar</button>
+                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                                                        <button type="button" class="btn btn-success" id="btn_update<?php echo $id_area; ?>">Actualizar</button>
                                                                     </div>
                                                                 </div>
                                                                 <!-- Fin Contenido Modal -->
@@ -110,26 +110,25 @@ include('../layout/parte1.php');
                                                         </div>
                                                         <!-- Fin Modal -->
                                                         <script>
-                                                            $('#btn_update<?php echo $id_categoria; ?>').click(function() {
+                                                            $('#btn_update<?php echo $id_area; ?>').click(function() {
+                                                                var nombre_area = $('#nombre_area<?php echo $id_area; ?>').val();
+                                                                var id_area = '<?php echo $id_area; ?>';
 
-                                                                var nombre_categoria = $('#nombre_categoria<?php echo $id_categoria; ?>').val();
-                                                                var id_categoria = '<?php echo $id_categoria; ?>';
-
-                                                                if (nombre_categoria == "") {
-                                                                    $('#nombre_categoria<?php echo $id_categoria; ?>').focus();
-                                                                    $('#lbl_update<?php echo $id_categoria; ?>').css('display', 'block');
+                                                                if (nombre_area == "") {
+                                                                    $('#nombre_area<?php echo $id_area; ?>').focus();
+                                                                    $('#lbl_update<?php echo $id_area; ?>').css('display', 'block');
                                                                 } else {
-                                                                    var url = "../app/controllers/categorias/update_de_categorias.php";
+                                                                    var url = "../app/controllers/areas/update_de_areas.php";
                                                                     $.get(url, {
-                                                                        nombre_categoria: nombre_categoria,
-                                                                        id_categoria: id_categoria
+                                                                        nombre_area: nombre_area,
+                                                                        id_area: id_area
                                                                     }, function(datos) {
-                                                                        $('#respuesta_update<?php echo $id_categoria; ?>').html(datos);
+                                                                        $('#respuesta_update<?php echo $id_area; ?>').html(datos);
                                                                     });
                                                                 }
                                                             });
                                                         </script>
-                                                        <div id="respuesta_update<?php echo $id_categoria; ?>"></div>
+                                                        <div id="respuesta_update<?php echo $id_area; ?>"></div>
                                                     </div>
                                                 </center>
                                             </td>
@@ -157,18 +156,19 @@ include('../layout/parte1.php');
 <?php include('../layout/parte2.php'); ?>
 
 <!-- Script para el funcionamiento de la tabla de áreas -->
+<!-- Script para el funcionamiento de la tabla de roles -->
 <script>
     $(function() {
         $("#example1").DataTable({
             "pageLength": 5,
             "language": {
                 "emptyTable": "No hay información",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Categorías",
-                "infoEmpty": "Mostrando 0 a 0 de 0 Categorías",
-                "infoFiltered": "(Filtrado de _MAX_ total Categorías)",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Áreas",
+                "infoEmpty": "Mostrando 0 a 0 de 0 Áreas",
+                "infoFiltered": "(Filtrado de _MAX_ total Áreas)",
                 "infoPostFix": "",
                 "thousands": ",",
-                "lengthMenu": "Mostrar _MENU_ Categorías",
+                "lengthMenu": "Mostrar _MENU_ Áreas",
                 "loadingRecords": "Cargando...",
                 "processing": "Procesando...",
                 "search": "Buscador:",
@@ -189,16 +189,27 @@ include('../layout/parte1.php');
                     orientation: 'landscape',
                     buttons: [{
                         text: 'Copiar',
+                        title: 'Reporte Áreas',
                         extend: 'copy',
                     }, {
-                        extend: 'pdf'
+                        extend: 'pdf',
+                        title: 'Reporte Áreas'
                     }, {
-                        extend: 'csv'
+                        extend: 'csv',
+                        title: 'Reporte Áreas'
                     }, {
-                        extend: 'excel'
+                        extend: 'excel',
+                        title: 'Reporte Áreas',
+                        exportOptions: {
+                            columns: [0, 1] // Solo exporta las dos primeras columnas
+                        }
                     }, {
                         text: 'Imprimir',
-                        extend: 'print'
+                        extend: 'print',
+                        title: 'Reporte Áreas',
+                        exportOptions: {
+                            columns: [0, 1] // Solo exporta las dos primeras columnas
+                        }
                     }]
                 },
                 {
@@ -220,7 +231,7 @@ include('../layout/parte1.php');
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #1d36b6;color: white">
-                <h4 class="modal-title">Creación de una nueva Área</h4>
+                <h4 class="modal-title">Creación de una Nueva Área</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -230,14 +241,14 @@ include('../layout/parte1.php');
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="">Nombre de la Nueva Área <b>*</b></label>
-                            <input type="text" id="nombre_categoria" class="form-control">
+                            <input type="text" id="nombre_area" class="form-control" required>
                             <small style="color: red;display: none" id="lbl_create">* Este campo es requerido</small>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="btn_create">Guardar</button>
             </div>
         </div>
@@ -250,15 +261,15 @@ include('../layout/parte1.php');
 <script>
     $('#btn_create').click(function() {
         // alert("guardar");
-        var nombre_categoria = $('#nombre_categoria').val();
+        var nombre_area = $('#nombre_area').val();
 
-        if (nombre_categoria == "") {
-            $('#nombre_categoria').focus();
+        if (nombre_area == "") {
+            $('#nombre_area').focus();
             $('#lbl_create').css('display', 'block');
         } else {
-            var url = "../app/controllers/categorias/registro_de_categorias.php";
+            var url = "../app/controllers/areas/registro_de_areas.php";
             $.get(url, {
-                nombre_categoria: nombre_categoria
+                nombre_area: nombre_area
             }, function(datos) {
                 $('#respuesta').html(datos);
             });

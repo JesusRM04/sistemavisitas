@@ -31,6 +31,9 @@
   <!-- Libreria Sweetallert2-->
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+  <!-- jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -191,17 +194,6 @@
             <i class="fas fa-expand-arrows-alt"></i>
           </a>
         </li>
-        <!-- Menú Lateral Secundario (derecho) Contenido (Opciones) -->
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            data-widget="control-sidebar"
-            data-slide="true"
-            href="#"
-            role="button">
-            <i class="fas fa-th-large"></i>
-          </a>
-        </li>
       </ul>
     </nav>
     <!-- Fin Navbar -->
@@ -351,10 +343,11 @@
                 </li>
               </ul>
             </li>
+
             <!-- Apartado Delegados -->
             <li class="nav-item">
               <a href="#" class="nav-link active" style="background-color: #611232;">
-                <i class="nav-icon fas fa-person-dress"></i>
+                <i class="nav-icon fas fa-user-tie"></i>
                 <p>
                   Delegados
                   <i class="right fas fa-angle-left"></i>
@@ -362,13 +355,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="<?php echo $URL;?>/delegados" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Listado de Delegados</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="<?php echo $URL;?>/delegados/create.php" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Creación de Delegados</p>
                   </a>

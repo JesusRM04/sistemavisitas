@@ -4,7 +4,7 @@ include('../layout/sesion.php');
 
 include('../layout/parte1.php');
 
-include('../app/controllers/usuarios/show_usuario.php');
+include('../app/controllers/delegados/show_delegado.php');
 
 ?>
 
@@ -15,7 +15,7 @@ include('../app/controllers/usuarios/show_usuario.php');
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <h1 class="m-0">Datos del Usuario</h1>
+                    <h1 class="m-0">Datos del Delegado</h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -31,7 +31,7 @@ include('../app/controllers/usuarios/show_usuario.php');
                 <div class="col-md-8">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">USUARIO</h3>
+                            <h3 class="card-title">DELEGADO</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
                                 </button>
@@ -65,50 +65,39 @@ include('../app/controllers/usuarios/show_usuario.php');
                                             </div>
                                             <input type="email" name="email" class="form-control" value="<?php echo $email; ?>" disabled>
                                         </div>
-                                    </div>
-                                    <!--Apartado Extension de Telefono-->
-                                    <div class="form-group">
-                                        <label for="">Extension de Tel.</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="fas fa-phone"></i>
-                                                </span>
-                                            </div>
-                                            <input type="number" name="extension" class="form-control" value="<?php echo $ext; ?>" disabled>
                                         </div>
-                                    </div>
-                                    <!--Apartado Rol de Usuario-->
-                                    <div class="form-group">
-                                        <label for="">Rol del Usuario</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="fas fa-user-tie"></i>
-                                                </span>
+                                        <!--Apartado Extension de Telefono-->
+                                        <div class="form-group">
+                                            <label for="">Extension de Tel.</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-phone"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="number" name="extension" class="form-control" value="<?php echo $ext; ?>" disabled>
                                             </div>
-                                            <input type="text" name="email" class="form-control" value="<?php echo $rol; ?>" disabled>
                                         </div>
-                                    </div>
-                                    <hr>
-                                    <div class="form-group">
-                                        <a href="index.php" class="btn btn-danger">Volver</a>
-                                    </div>
+                                        
+                                        <hr>
+                                        <div class="form-group">
+                                            <a href="index.php" class="btn btn-danger">Volver</a>
+                                        </div>
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
     </div>
-    <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
+    <!-- /.content-wrapper -->
 
-<?php include('../layout/mensajes.php'); ?>
-<?php include('../layout/parte2.php'); ?>
+    <?php include('../layout/mensajes.php'); ?>
+    <?php include('../layout/parte2.php'); ?>
