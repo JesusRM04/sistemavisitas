@@ -7,9 +7,8 @@ include('./layout/parte1.php'); //Llamamos a la parte 1 la cual contiene el navb
 
 include('app/controllers/usuarios/listado_de_usuarios.php');
 include('app/controllers/roles/listado_de_roles.php');
-include ('app/controllers/areas/listado_de_areas.php');
-//include ('app/controllers/almacen/listado_de_productos.php');
-include ('app/controllers/delegados/listado_de_delegados.php');
+include('app/controllers/areas/listado_de_areas.php');
+include('app/controllers/delegados/listado_de_delegados.php');
 //include ('app/controllers/compras/listado_de_compras.php');
 //include ('app/controllers/ventas/listado_de_ventas.php');
 //include ('app/controllers/clientes/listado_de_clientes.php');
@@ -39,79 +38,85 @@ include ('app/controllers/delegados/listado_de_delegados.php');
       <div class="row">
 
         <!-- Tarjeta Usuarios -->
-        <div class="col-lg-3 col-6">
-          <div class="small-box" style="background-color: #611232;">
-            <div class="inner" style="color: white">
-              <?php
-              $contador_de_usuarios = 0;
-              foreach ($usuarios_datos as $usuarios_dato) {
-                $contador_de_usuarios = $contador_de_usuarios + 1;
-              }
-              ?>
-              <h3><?php echo $contador_de_usuarios;?></h3>
-              <p style="color: white">Usuarios Registrados</p>
-            </div>
-            <a href="./usuarios">
-              <div class="icon">
-                <i class="fas fa-users" style="color: white;"></i>
+        <?php if ($rol_sesion == 'ADMINISTRADOR') { ?>
+          <div class="col-lg-3 col-6">
+            <div class="small-box" style="background-color: #611232;">
+              <div class="inner" style="color: white">
+                <?php
+                $contador_de_usuarios = 0;
+                foreach ($usuarios_datos as $usuarios_dato) {
+                  $contador_de_usuarios = $contador_de_usuarios + 1;
+                }
+                ?>
+                <h3><?php echo $contador_de_usuarios; ?></h3>
+                <p style="color: white">Usuarios Registrados</p>
               </div>
-            </a>
-            <a href="./usuarios" class="small-box-footer" style="color: white">
-              Más detalle
-              <i
-                class="fas fa-arrow-circle-right"
-                style="color: white"></i>
-            </a>
+              <a href="./usuarios">
+                <div class="icon">
+                  <i class="fas fa-users" style="color: white;"></i>
+                </div>
+              </a>
+              <a href="./usuarios" class="small-box-footer" style="color: white">
+                Más detalle
+                <i
+                  class="fas fa-arrow-circle-right"
+                  style="color: white"></i>
+              </a>
+            </div>
           </div>
-        </div>
+        <?php } ?>
 
         <!-- Tarjeta Roles -->
-        <div class="col-lg-3 col-6">
-          <div class="small-box" style="background-color: #b89457; color: white">
-            <div class="inner">
-              <?php
-              $contador_de_roles = 0;
-              foreach ($roles_datos as $roles_dato) {
-                $contador_de_roles = $contador_de_roles + 1;
-              }
-              ?>
-              <h3><?php echo $contador_de_roles; ?></h3>
-              <p>Roles Registrados</p>
-            </div>
-            <a href="./roles">
-              <div class="icon">
-                <i class="fas fa-address-card" style="color: white"></i>
+        <?php if ($rol_sesion == 'ADMINISTRADOR') { ?>
+          <div class="col-lg-3 col-6">
+            <div class="small-box" style="background-color: #b89457; color: white">
+              <div class="inner">
+                <?php
+                $contador_de_roles = 0;
+                foreach ($roles_datos as $roles_dato) {
+                  $contador_de_roles = $contador_de_roles + 1;
+                }
+                ?>
+                <h3><?php echo $contador_de_roles; ?></h3>
+                <p>Roles Registrados</p>
               </div>
-            </a>
-            <a href="./roles" class="small-box-footer">
-              Más detalle <i class="fas fa-arrow-circle-right"></i>
-            </a>
+              <a href="./roles">
+                <div class="icon">
+                  <i class="fas fa-address-card" style="color: white"></i>
+                </div>
+              </a>
+              <a href="./roles" class="small-box-footer">
+                Más detalle <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
           </div>
-        </div>
+        <?php } ?>
 
         <!-- Tarjeta Áreas -->
-        <div class="col-lg-3 col-6">
-          <div class="small-box" style="background-color: #611232; color: white">
-            <div class="inner">
-              <?php
-              $contador_de_areas = 0;
-              foreach ($areas_datos as $areas_dato) {
-                $contador_de_areas = $contador_de_areas + 1;
-              }
-              ?>
-              <h3><?php echo $contador_de_areas; ?></h3>
-              <p>Áreas Registradas</p>
-            </div>
-            <a href="./areas">
-              <div class="icon">
-                <i class="fas fa-map" style="color: white;"></i>
+        <?php if ($rol_sesion == 'ADMINISTRADOR') { ?>
+          <div class="col-lg-3 col-6">
+            <div class="small-box" style="background-color: #611232; color: white">
+              <div class="inner">
+                <?php
+                $contador_de_areas = 0;
+                foreach ($areas_datos as $areas_dato) {
+                  $contador_de_areas = $contador_de_areas + 1;
+                }
+                ?>
+                <h3><?php echo $contador_de_areas; ?></h3>
+                <p>Áreas Registradas</p>
               </div>
-            </a>
-            <a href="./areas" class="small-box-footer">
-              Más detalle <i class="fas fa-arrow-circle-right"></i>
-            </a>
+              <a href="./areas">
+                <div class="icon">
+                  <i class="fas fa-map" style="color: white;"></i>
+                </div>
+              </a>
+              <a href="./areas" class="small-box-footer">
+                Más detalle <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
           </div>
-        </div>
+        <?php } ?>
 
         <!-- Tarjeta Visitas -->
         <div class="col-lg-3 col-6">
@@ -130,35 +135,38 @@ include ('app/controllers/delegados/listado_de_delegados.php');
             </a>
           </div>
         </div>
-      </div>
 
-      <!-- Tarjeta Delegados -->
-        <div class="col-lg-3 col-6">
-          <div class="small-box" style="background-color: #611232; color: white">
-            <div class="inner">
-              <?php
-              $contador_de_delegados = 0;
-              foreach ($delegados_datos as $delegados_dato) {
-                $contador_de_delegados = $contador_de_delegados + 1;
-              }
-              ?>
-              <h3><?php echo $contador_de_delegados; ?></h3>
-              <p>Delegados Registrados</p>
-            </div>
-            <a href="./delegados">
-              <div class="icon">
-                <i class="fas fa-user-tie" style="color: white;"></i>
+        <!-- Tarjeta Delegados -->
+        <?php if ($rol_sesion == 'ADMINISTRADOR') { ?>
+          <div class="col-lg-3 col-6">
+            <div class="small-box" style="background-color: #611232; color: white">
+              <div class="inner">
+                <?php
+                $contador_de_delegados = 0;
+                foreach ($delegados_datos as $delegados_dato) {
+                  $contador_de_delegados = $contador_de_delegados + 1;
+                }
+                ?>
+                <h3><?php echo $contador_de_delegados; ?></h3>
+                <p>Delegados Registrados</p>
               </div>
-            </a>
-            <a href="./delegados" class="small-box-footer">
-              Más detalle <i class="fas fa-arrow-circle-right"></i>
-            </a>
+              <a href="./delegados">
+                <div class="icon">
+                  <i class="fas fa-user-tie" style="color: white;"></i>
+                </div>
+              </a>
+              <a href="./delegados" class="small-box-footer">
+                Más detalle <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
           </div>
-        </div>
+        <?php } ?>
+
       </div>
-      <!-- /.row -->
     </div>
-    <!-- /.container-fluid -->
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
   <!-- Fin Contenido Principal -->
 </div>
 <!-- Fin Contenedor Principal -->

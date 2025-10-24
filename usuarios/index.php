@@ -60,8 +60,8 @@ include ('../app/controllers/usuarios/listado_de_usuarios.php');
                                     $id_usuario = $usuarios_dato['id_usuario']; ?>
                                     <tr>
                                         <td><center><?php echo $contador = $contador + 1;?></center></td>
-                                        <td><?php echo $usuarios_dato['nombres'];?></td>
-                                        <td><?php echo $usuarios_dato['email'];?></td>
+                                        <td><center><?php echo $usuarios_dato['nombres'];?></center></td>
+                                        <td><center><?php echo $usuarios_dato['email'];?></center></td>
                                         <td><center><?php echo $usuarios_dato['rol'];?></center></td>
                                         <td><center><?php echo $usuarios_dato['extension'];?></center></td>
                                         <td>
