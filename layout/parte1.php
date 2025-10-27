@@ -336,13 +336,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="<?php echo $URL; ?>/visitas" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Listado de Visitas</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="<?php echo $URL; ?>/visitas/create.php" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Creación de Visita</p>
                   </a>

@@ -9,7 +9,7 @@ include('app/controllers/usuarios/listado_de_usuarios.php');
 include('app/controllers/roles/listado_de_roles.php');
 include('app/controllers/areas/listado_de_areas.php');
 include('app/controllers/delegados/listado_de_delegados.php');
-//include ('app/controllers/compras/listado_de_compras.php');
+include ('app/controllers/visitas/listado_de_visitas.php');
 //include ('app/controllers/ventas/listado_de_ventas.php');
 //include ('app/controllers/clientes/listado_de_clientes.php');
 ?>
@@ -122,15 +122,21 @@ include('app/controllers/delegados/listado_de_delegados.php');
         <div class="col-lg-3 col-6">
           <div class="small-box" style="background-color: #b89457; color: white">
             <div class="inner">
-              <h3>N</h3>
+              <?php
+                $contador_de_visitas = 0;
+                foreach ($visitas_datos as $visitas_dato) {
+                  $contador_de_visitas = $contador_de_visitas + 1;
+                }
+                ?>
+              <h3><?php echo $contador_de_visitas; ?></h3>
               <p>Visitas Registradas</p>
             </div>
-            <a href="">
+            <a href="./visitas">
               <div class="icon">
                 <i class="fas fa-address-book" style="color: white;"></i>
               </div>
             </a>
-            <a href="#" class="small-box-footer">
+            <a href="./visitas" class="small-box-footer">
               Más detalle <i class="fas fa-arrow-circle-right"></i>
             </a>
           </div>
