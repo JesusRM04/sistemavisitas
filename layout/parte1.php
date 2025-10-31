@@ -338,7 +338,13 @@
                 <li class="nav-item">
                   <a href="<?php echo $URL; ?>/visitas" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Listado de Visitas</p>
+                    <p>Visitas Pendientes</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?php echo $URL; ?>/visitas/aprobadas.php" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Visitas Autorizadas</p>
                   </a>
                 </li>
                 <li class="nav-item">

@@ -119,7 +119,7 @@ include('../app/controllers/visitas/show.php');
                                         <hr>
                                         
                                         <div class="form-group">
-                                            <a href="index.php" class="btn btn-secondary">Volver</a>
+                                            <a href="<?php echo ($estado == 'APROBADO') ? 'aprobadas.php' : 'index.php'; ?>" class="btn btn-secondary">Cancelar</a>
                                             <button class="btn btn-danger">Eliminar</button>
                                         </div>
                                     </form>

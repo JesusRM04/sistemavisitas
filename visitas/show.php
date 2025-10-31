@@ -85,7 +85,7 @@ include('../app/controllers/visitas/show.php');
                                                     </div>
 
                                                     <!-- Apartado para Estado (oculto) -->
-                                                    <div class="col-md-2" >
+                                                    <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label for="">Estado:</label>
                                                             <input type="text" name="estado" value="<?php echo $estado; ?>" disabled>
@@ -117,10 +117,11 @@ include('../app/controllers/visitas/show.php');
                                         </div>
 
                                         <hr>
-                                        
+
                                         <div class="form-group">
-                                            <a href="index.php" class="btn btn-danger">Volver</a>
+                                            <a href="<?php echo ($estado == 'APROBADO') ? 'aprobadas.php' : 'index.php'; ?>" class="btn btn-danger">Volver</a>
                                         </div>
+
                                     </form>
                                 </div>
                             </div>
