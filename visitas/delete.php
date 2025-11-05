@@ -6,6 +6,10 @@ include('../layout/parte1.php');
 
 include('../app/controllers/visitas/show.php');
 
+// Separar fecha y hora del timestamp
+$fecha_solo = date('d/m/Y', strtotime($fecha_hora));
+$hora_solo = date('H:i', strtotime($fecha_hora));
+
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -76,6 +80,16 @@ include('../app/controllers/visitas/show.php');
                                                 </div>
 
                                                 <div class="row">
+                                                    <!-- Apartado para Institución -->
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="">Institución de Procedencia:</label>
+                                                            <input type="text" class="form-control" value="<?php echo $institucion; ?>" disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
                                                     <!-- Apartado para Motivo -->
                                                     <div class="col-md-8">
                                                         <div class="form-group">
@@ -84,8 +98,8 @@ include('../app/controllers/visitas/show.php');
                                                         </div>
                                                     </div>
 
-                                                    <!-- Apartado para Estado (oculto) -->
-                                                    <div class="col-md-2" >
+                                                    <!-- Apartado para Estado -->
+                                                    <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label for="">Estado:</label>
                                                             <input type="text" name="estado" value="<?php echo $estado; ?>" disabled>
@@ -107,11 +121,17 @@ include('../app/controllers/visitas/show.php');
 
                                             </div>
 
-                                            <!-- Apartado para Fecha -->
                                             <div class="col-md-3">
+                                                <!-- Apartado para Fecha -->
                                                 <div class="form-group">
                                                     <label for="">Fecha de Visita:</label>
-                                                    <input type="text" class="form-control" value="<?php echo $fecha_hora; ?>" disabled>
+                                                    <input type="text" class="form-control" value="<?php echo $fecha_solo; ?>" disabled>
+                                                </div>
+
+                                                <!-- Apartado para Hora -->
+                                                <div class="form-group">
+                                                    <label for="">Hora de Visita:</label>
+                                                    <input type="text" class="form-control" value="<?php echo $hora_solo; ?>" disabled>
                                                 </div>
                                             </div>
                                         </div>

@@ -9,6 +9,10 @@ include('../app/controllers/delegados/listado_de_delegados.php');
 include('../app/controllers/areas/listado_de_areas.php');
 include('../app/controllers/visitas/show.php');
 
+// Separar fecha y hora del timestamp
+$fecha_solo = date('Y-m-d', strtotime($fecha_hora));
+$hora_solo = date('H:i', strtotime($fecha_hora));
+
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -91,8 +95,10 @@ include('../app/controllers/visitas/show.php');
                                                             <div style="display: flex">
                                                                 <select name="id_delegado" id="" class="form-control" required>
                                                                     <?php
-                                                                    foreach ($delegados_datos as $delegados_dato) { ?>
-                                                                        <option value="<?php echo $delegados_dato['id_delegado']; ?>">
+                                                                    foreach ($delegados_datos as $delegados_dato) {
+                                                                        $selected = ($delegados_dato['nombre'] == $nombre_delegado) ? 'selected' : '';
+                                                                        ?>
+                                                                        <option value="<?php echo $delegados_dato['id_delegado']; ?>" <?php echo $selected; ?>>
                                                                             <?php echo $delegados_dato['nombres']; ?>
                                                                         </option>
                                                                     <?php
@@ -100,6 +106,16 @@ include('../app/controllers/visitas/show.php');
                                                                     ?>
                                                                 </select>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <!-- Apartado para Institución -->
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="">Institución de Procedencia:</label>
+                                                            <input type="text" name="institucion" value="<?php echo $institucion; ?>" class="form-control" placeholder="Ej: Universidad Autónoma, Empresa XYZ, etc." required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -135,48 +151,19 @@ include('../app/controllers/visitas/show.php');
 
                                             </div>
 
-                                            <!-- Apartado para Fecha -->
                                             <div class="col-md-3">
+                                                <!-- Apartado para Fecha -->
                                                 <div class="form-group">
                                                     <label for="">Fecha de Visita:</label>
-                                                    <input type="date" id="fecha_ingreso" name="fecha_hora" value="<?php echo date('Y-m-d', strtotime($fecha_hora)); ?>" class="form-control" required>
+                                                    <input type="date" id="fecha_ingreso" name="fecha_visita" value="<?php echo $fecha_solo; ?>" class="form-control" required>
                                                     <small id="errorFecha" style="color: red; display: none;">La fecha no puede ser anterior a hoy</small>
+                                                </div>
 
-                                                    <script>
-                                                        document.addEventListener('DOMContentLoaded', function() {
-                                                            const inputFecha = document.getElementById('fecha_ingreso');
-                                                            const errorFecha = document.getElementById('errorFecha');
-
-                                                            // Establecer fecha mínima (hoy)
-                                                            const hoy = new Date();
-                                                            const fechaMinima = hoy.toISOString().split('T')[0];
-                                                            inputFecha.setAttribute('min', fechaMinima);
-
-                                                            // Función para comparar solo fechas (sin hora)
-                                                            function compararFechas(fecha1String, fecha2String) {
-                                                                return fecha1String < fecha2String;
-                                                            }
-
-                                                            // Validar al cambiar la fecha
-                                                            inputFecha.addEventListener('change', function() {
-                                                                if (compararFechas(this.value, fechaMinima)) {
-                                                                    errorFecha.style.display = 'block';
-                                                                    this.value = '';
-                                                                } else {
-                                                                    errorFecha.style.display = 'none';
-                                                                }
-                                                            });
-
-                                                            // Validar al enviar el formulario
-                                                            inputFecha.form.addEventListener('submit', function(e) {
-                                                                if (compararFechas(inputFecha.value, fechaMinima)) {
-                                                                    e.preventDefault();
-                                                                    errorFecha.style.display = 'block';
-                                                                    inputFecha.focus();
-                                                                }
-                                                            });
-                                                        });
-                                                    </script>
+                                                <!-- Apartado para Hora -->
+                                                <div class="form-group">
+                                                    <label for="">Hora de Visita:</label>
+                                                    <input type="time" id="hora_visita" name="hora_visita" value="<?php echo $hora_solo; ?>" class="form-control" required>
+                                                    <small class="text-muted">Formato 24 horas</small>
                                                 </div>
                                             </div>
                                         </div>

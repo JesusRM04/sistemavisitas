@@ -48,9 +48,11 @@ include ('../app/controllers/visitas/listado_de_visitas.php');
                                    <tr>
                                        <th><center>Nro</center></th>
                                        <th><center>Solicitante</center></th>
+                                       <th><center>Institución</center></th>
                                        <th><center>Delegado</center></th>
                                        <th><center>Área</center></th>
                                        <th><center>Fecha</center></th>
+                                       <th><center>Hora</center></th>
                                        <th><center>Motivo</center></th>
                                        <th><center>Estado</center></th>
                                        <th><center>Descripción Vehículo</center></th>
@@ -61,13 +63,19 @@ include ('../app/controllers/visitas/listado_de_visitas.php');
                                    <?php
                                    $contador = 0;
                                    foreach ($visitas_datos as $visitas_dato){
-                                       $id_visita = $visitas_dato['id_visita']; ?>
+                                       $id_visita = $visitas_dato['id_visita']; 
+                                       // Separar fecha y hora
+                                       $fecha_formateada = date('d/m/Y', strtotime($visitas_dato['fecha_hora']));
+                                       $hora_formateada = date('H:i', strtotime($visitas_dato['fecha_hora']));
+                                       ?>
                                        <tr>
                                            <td><center><?php echo $contador = $contador + 1; ?></center></td>
                                            <td><center><?php echo $visitas_dato['nombre_usuario'];?></center></td>
+                                           <td><center><?php echo $visitas_dato['institucion'];?></center></td>
                                            <td><center><?php echo $visitas_dato['nombre_delegado'];?></center></td>
                                            <td><center><?php echo $visitas_dato['nombre_area'];?></center></td>
-                                           <td><center><?php echo $visitas_dato['fecha_hora'];?></center></td>
+                                           <td><center><?php echo $fecha_formateada;?></center></td>
+                                           <td><center><?php echo $hora_formateada;?></center></td>
                                            <td><?php echo $visitas_dato['motivo'];?></td>
                                            <td><center><span class="badge badge-warning"><?php echo $visitas_dato['estado'];?></span></center></td>
                                            <td><?php echo $visitas_dato['comentario_admin'];?></td>
@@ -86,7 +94,6 @@ include ('../app/controllers/visitas/listado_de_visitas.php');
                                    }
                                    ?>
                                    </tbody>
-                                   </tfoot>
                                </table>
                            </div>
                         </div>
@@ -142,32 +149,32 @@ include ('../app/controllers/visitas/listado_de_visitas.php');
                         title: 'Reporte Visitas',
                         extend: 'copy',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7] 
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
                         }
                     }, {
                         extend: 'pdf',
                         title: 'Reporte Visitas',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7] 
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
                         }
                     }, {
                         extend: 'csv',
                         title: 'Reporte Visitas',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7] 
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
                         }
                     }, {
                         extend: 'excel',
                         title: 'Reporte Visitas',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7] 
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
                         }
                     }, {
                         text: 'Imprimir',
                         extend: 'print',
                         title: 'Reporte Visitas',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7] 
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
                         }
                     }]
                 },
@@ -180,4 +187,3 @@ include ('../app/controllers/visitas/listado_de_visitas.php');
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
 </script>
-

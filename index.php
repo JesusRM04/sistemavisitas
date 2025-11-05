@@ -10,6 +10,15 @@ include('app/controllers/roles/listado_de_roles.php');
 include('app/controllers/areas/listado_de_areas.php');
 include('app/controllers/delegados/listado_de_delegados.php');
 include ('app/controllers/visitas/listado_de_visitas.php');
+// función para obtener las aprobadas sin sobrescribir variables globales
+function obtener_visitas_aprobadas($pdo) {
+    ob_start(); // evita salida directa
+    include('app/controllers/visitas/visitas_aprobadas.php');
+    ob_end_clean(); // limpia cualquier salida accidental
+    return $visitas_datos; // devuelve las visitas aprobadas (usa el mismo nombre interno)
+}
+
+$visitas_aprobadas = obtener_visitas_aprobadas($pdo);
 //include ('app/controllers/ventas/listado_de_ventas.php');
 //include ('app/controllers/clientes/listado_de_clientes.php');
 ?>
@@ -141,6 +150,28 @@ include ('app/controllers/visitas/listado_de_visitas.php');
             </a>
           </div>
         </div>
+
+        <!-- Tarjeta Visitas Aprobadas -->
+        <div class="col-lg-3 col-6">
+          <div class="small-box" style="background-color:#b89457; color: white">
+            <div class="inner">
+              <?php
+                $contador_de_visitas_aprobadas = count($visitas_aprobadas);
+              ?>
+              <h3><?php echo $contador_de_visitas_aprobadas; ?></h3>
+              <p>Visitas Aprobadas</p>
+            </div>
+            <a href="./visitas/aprobadas.php">
+              <div class="icon">
+                <i class="fas fa-image-portrait" style="color: white;"></i>
+              </div>
+            </a>
+            <a href="./visitas/aprobadas.php" class="small-box-footer">
+              Más detalle <i class="fas fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+
 
         <!-- Tarjeta Delegados -->
         <?php if ($rol_sesion == 'ADMINISTRADOR') { ?>

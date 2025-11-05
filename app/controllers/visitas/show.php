@@ -9,6 +9,7 @@ $sql_visitas = "SELECT
     a.nombre_area AS nombre_area,
     v.fecha_hora,
     v.motivo,
+    v.institucion,
     v.estado,
     v.comentario_admin
 FROM visitas v
@@ -28,6 +29,7 @@ foreach ($visitas_datos as $visita_dato){
     $nombre_area = $visita_dato['nombre_area'];
     $fecha_hora = $visita_dato['fecha_hora'];
     $motivo = $visita_dato['motivo'];
+    $institucion = $visita_dato['institucion'];
     $estado = $visita_dato['estado'];
     $comentario_admin = $visita_dato['comentario_admin'];
 }

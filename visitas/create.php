@@ -102,11 +102,21 @@ include('../app/controllers/delegados/listado_de_delegados.php');
                                                 </div>
 
                                                 <div class="row">
+                                                    <!-- Apartado para Institución -->
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="">Institución de Procedencia:</label>
+                                                            <input type="text" name="institucion" class="form-control" placeholder="Ej: Universidad Autónoma, Empresa XYZ, etc." required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
                                                     <!-- Apartado para Motivo -->
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label for="">Motivo:</label>
-                                                            <textarea name="motivo" id="" cols="30" rows="2" class="form-control"></textarea required>
+                                                            <textarea name="motivo" id="" cols="30" rows="2" class="form-control" required></textarea>
                                                         </div>
                                                     </div>
                                                     
@@ -133,18 +143,29 @@ include('../app/controllers/delegados/listado_de_delegados.php');
 
                                             </div>
 
-                                            <!-- Apartado para Fecha -->
                                             <div class="col-md-3">
+                                                <!-- Apartado para Fecha -->
                                                 <div class="form-group">
                                                     <label for="">Fecha de Visita:</label>
                                                     <input type="date"
-                                                        name="fecha_hora"
+                                                        name="fecha_visita"
                                                         id="fecha_ingreso"
                                                         class="form-control"
                                                         required>
                                                     <small class="text-danger" style="display:none;" id="errorFecha">
                                                         Ingrese una Fecha Válida
                                                     </small>
+                                                </div>
+
+                                                <!-- Apartado para Hora -->
+                                                <div class="form-group">
+                                                    <label for="">Hora de Visita:</label>
+                                                    <input type="time"
+                                                        name="hora_visita"
+                                                        id="hora_visita"
+                                                        class="form-control"
+                                                        required>
+                                                    <small class="text-muted">Formato 24 horas</small>
                                                 </div>
                                             </div>
                                         </div>

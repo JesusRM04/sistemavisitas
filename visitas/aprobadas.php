@@ -44,6 +44,7 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                                    <tr>
                                        <th><center>Nro</center></th>
                                        <th><center>Solicitante</center></th>
+                                       <th><center>Institución</center></th>
                                        <th><center>Delegado</center></th>
                                        <th><center>Área</center></th>
                                        <th><center>Fecha</center></th>
@@ -61,6 +62,7 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                                        <tr>
                                            <td><center><?php echo $contador = $contador + 1; ?></center></td>
                                            <td><center><?php echo $visitas_dato['nombre_usuario'];?></center></td>
+                                           <td><center><?php echo $visitas_dato['institucion']; ?></center></td>
                                            <td><center><?php echo $visitas_dato['nombre_delegado'];?></center></td>
                                            <td><center><?php echo $visitas_dato['nombre_area'];?></center></td>
                                            <td><center><?php echo $visitas_dato['fecha_hora'];?></center></td>
@@ -134,32 +136,37 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                         title: 'Reporte Visitas Aprobadas',
                         extend: 'copy',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7] 
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+ 
                         }
                     }, {
                         extend: 'pdf',
                         title: 'Reporte Visitas Aprobadas',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7] 
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+ 
                         }
                     }, {
                         extend: 'csv',
                         title: 'Reporte Visitas Aprobadas',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7] 
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+ 
                         }
                     }, {
                         extend: 'excel',
                         title: 'Reporte Visitas Aprobadas',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7] 
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+ 
                         }
                     }, {
                         text: 'Imprimir',
                         extend: 'print',
                         title: 'Reporte Visitas Aprobadas',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7] 
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+ 
                         }
                     }]
                 },

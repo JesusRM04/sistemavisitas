@@ -3,6 +3,7 @@
 $sql_visitas = "SELECT 
     v.id_visita,
     u.nombre AS nombre_usuario,
+    v.institucion,
     d.nombre AS nombre_delegado,
     a.nombre_area AS nombre_area,
     v.fecha_hora,

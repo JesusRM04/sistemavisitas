@@ -7,6 +7,7 @@ $sql_visitas = "SELECT
     a.nombre_area AS nombre_area,
     v.fecha_hora,
     v.motivo,
+    v.institucion,
     v.estado,
     v.comentario_admin
 FROM visitas v
