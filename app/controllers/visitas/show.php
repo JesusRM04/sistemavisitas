@@ -33,4 +33,17 @@ foreach ($visitas_datos as $visita_dato){
     $estado = $visita_dato['estado'];
     $comentario_admin = $visita_dato['comentario_admin'];
 }
+
+// Obtener invitados de esta visita
+$sql_invitados = "SELECT nombre FROM invitados WHERE id_visita = :id_visita ORDER BY fecha_creacion ASC";
+$query_invitados = $pdo->prepare($sql_invitados);
+$query_invitados->execute([':id_visita' => $id_visita_get]);
+$invitados_datos = $query_invitados->fetchAll(PDO::FETCH_ASSOC);
+
+// Convertir invitados a texto (uno por línea)
+$invitados_texto = '';
+foreach ($invitados_datos as $invitado) {
+    $invitados_texto .= $invitado['nombre'] . "\n";
+}
+$invitados_texto = rtrim($invitados_texto); // Quitar último salto de línea
 ?>

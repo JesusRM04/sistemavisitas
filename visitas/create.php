@@ -131,11 +131,22 @@ include('../app/controllers/delegados/listado_de_delegados.php');
 
 
                                                 <div class="row">
+                                                    <!-- Apartado para Invitados -->
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="">Nombres de los Visitantes:</label>
+                                                            <small class="text-muted">(Ingrese un nombre por línea)</small>
+                                                            <textarea name="invitados" id="invitados" cols="30" rows="4" class="form-control" placeholder="Ejemplo:&#10;Juan Pérez García&#10;María López Rodríguez&#10;Carlos Martínez López" required></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
                                                     <!-- Apartado para Descripción -->
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label for="">Descripción Vehículo (Si Aplica):</label>
-                                                            <textarea name="comentario_admin" id="" cols="30" rows="5" class="form-control"></textarea>
+                                                            <textarea name="comentario_admin" id="" cols="30" rows="3" class="form-control"></textarea>
                                                         </div>
                                                     </div>
 

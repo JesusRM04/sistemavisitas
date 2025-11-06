@@ -13,6 +13,7 @@ $motivo = $_POST['motivo'];
 $institucion = $_POST['institucion'];
 $estado = $_POST['estado'];
 $comentario_admin = $_POST['comentario_admin'];
+$invitados_texto = $_POST['invitados'];
 
 // Combinar fecha y hora en formato TIMESTAMP
 $fecha_hora = $fecha_visita . ' ' . $hora_visita . ':00';
@@ -40,6 +41,31 @@ $sentencia->bindParam('comentario_admin',$comentario_admin);
 $sentencia->bindParam('id_visita',$id_visita);
 
 if($sentencia->execute()){
+    // Eliminar invitados anteriores
+    $delete_invitados = $pdo->prepare("DELETE FROM invitados WHERE id_visita = :id_visita");
+    $delete_invitados->execute([':id_visita' => $id_visita]);
+    
+    // Procesar nuevos invitados (separar por líneas)
+    $invitados_array = array_filter(array_map('trim', explode("\n", $invitados_texto)));
+    
+    // Insertar cada invitado
+    $sentencia_invitado = $pdo->prepare("
+        INSERT INTO invitados (id_visita, nombre, fecha_creacion)
+        VALUES (:id_visita, :nombre, :fecha_creacion)
+    ");
+    
+    $fecha_creacion = date('Y-m-d H:i:s');
+    
+    foreach ($invitados_array as $nombre_invitado) {
+        if (!empty($nombre_invitado)) {
+            $sentencia_invitado->execute([
+                ':id_visita' => $id_visita,
+                ':nombre' => $nombre_invitado,
+                ':fecha_creacion' => $fecha_creacion
+            ]);
+        }
+    }
+    
     session_start();
     $_SESSION['mensaje'] = "Se Actualizó la Visita de Manera Correcta";
     $_SESSION['icono'] = "success";

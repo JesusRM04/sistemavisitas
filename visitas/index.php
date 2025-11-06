@@ -55,6 +55,7 @@ include ('../app/controllers/visitas/listado_de_visitas.php');
                                        <th><center>Hora</center></th>
                                        <th><center>Motivo</center></th>
                                        <th><center>Estado</center></th>
+                                       <th><center>Visitantes</center></th>
                                        <th><center>Descripción Vehículo</center></th>
                                        <th><center>Acciones</center></th>
                                    </tr>
@@ -78,6 +79,17 @@ include ('../app/controllers/visitas/listado_de_visitas.php');
                                            <td><center><?php echo $hora_formateada;?></center></td>
                                            <td><?php echo $visitas_dato['motivo'];?></td>
                                            <td><center><span class="badge badge-warning"><?php echo $visitas_dato['estado'];?></span></center></td>
+                                           <td>
+                                                <center>
+                                                    <?php if (!empty($visitas_dato['invitados'])): ?>
+                                                    <span title="<?php echo str_replace('<br>', '&#10;', $visitas_dato['invitados']); ?>" 
+                                                        style="cursor: help; color: #007bff; white-space: pre-line;">Ver invitados</span>
+                                                    <span style="display:none;"><?php echo $visitas_dato['invitados']; ?></span>
+                                                    <?php else: ?>
+                                                    <span style="color: gray;">Sin invitados</span>
+                                                    <?php endif; ?>
+                                                </center>
+                                            </td>
                                            <td><?php echo $visitas_dato['comentario_admin'];?></td>
                                            <td>
                                                <center>
@@ -140,50 +152,131 @@ include ('../app/controllers/visitas/listado_de_visitas.php');
             "responsive": true,
             "lengthChange": true,
             "autoWidth": false,
-            buttons: [{
-                    extend: 'collection',
-                    text: 'Reportes',
-                    orientation: 'landscape',
-                    buttons: [{
-                        text: 'Copiar',
-                        title: 'Reporte Visitas',
-                        extend: 'copy',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
+            buttons: [
+    {
+        extend: 'collection',
+        text: 'Reportes',
+        orientation: 'landscape',
+        buttons: [
+            {
+                extend: 'copy',
+                text: 'Copiar',
+                title: 'Reporte Visitas',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5,6,7,8,9,10],
+                    format: {
+                        body: function (data, row, column, node) {
+                            if (column === 9) { // Visitantes
+                                const hidden = $(node).find('span[style*="display:none"]').html();
+                                if (hidden) {
+                                    // Convertimos <br> a salto de línea real
+                                    return hidden.replace(/<br\s*\/?>/gi, '\n');
+                                }
+                            }
+                            return $(node).text().trim();
                         }
-                    }, {
-                        extend: 'pdf',
-                        title: 'Reporte Visitas',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
-                        }
-                    }, {
-                        extend: 'csv',
-                        title: 'Reporte Visitas',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
-                        }
-                    }, {
-                        extend: 'excel',
-                        title: 'Reporte Visitas',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
-                        }
-                    }, {
-                        text: 'Imprimir',
-                        extend: 'print',
-                        title: 'Reporte Visitas',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
-                        }
-                    }]
-                },
-                {
-                    extend: 'colvis',
-                    text: 'Visor de columnas',
-                    collectionLayout: 'fixed three-column'
+                    }
                 }
-            ],
+            },
+            {
+                extend: 'pdf',
+                text: 'Exportar PDF',
+                title: 'Reporte Visitas',
+                orientation: 'landscape',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5,6,7,8,9,10],
+                    format: {
+                        body: function (data, row, column, node) {
+                            if (column === 9) {
+                                const hidden = $(node).find('span[style*="display:none"]').html();
+                                if (hidden) {
+                                    // Sustituye <br> por salto de línea real
+                                    return hidden.replace(/<br\s*\/?>/gi, '\n');
+                                }
+                            }
+                            return $(node).text().trim();
+                        }
+                    }
+                },
+                customize: function (doc) {
+                    // Ajusta tamaño y margen del PDF
+                    doc.styles.tableBodyOdd.alignment = 'left';
+                    doc.styles.tableBodyEven.alignment = 'left';
+                    doc.defaultStyle.fontSize = 9;
+                }
+            },
+            {
+                extend: 'csv',
+                text: 'Exportar CSV',
+                title: 'Reporte Visitas',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5,6,7,8,9,10],
+                    format: {
+                        body: function (data, row, column, node) {
+                            if (column === 9) {
+                                const hidden = $(node).find('span[style*="display:none"]').html();
+                                if (hidden) {
+                                    return hidden.replace(/<br\s*\/?>/gi, '\n');
+                                }
+                            }
+                            return $(node).text().trim();
+                        }
+                    }
+                }
+            },
+            {
+                extend: 'excel',
+                text: 'Exportar Excel',
+                title: 'Reporte Visitas',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5,6,7,8,9,10],
+                    format: {
+                        body: function (data, row, column, node) {
+                            if (column === 9) {
+                                const hidden = $(node).find('span[style*="display:none"]').html();
+                                if (hidden) {
+                                    // Excel sí interpreta \n como salto de línea dentro de la celda
+                                    return hidden.replace(/<br\s*\/?>/gi, '\n');
+                                }
+                            }
+                            return $(node).text().trim();
+                        }
+                    }
+                }
+            },
+            {
+                extend: 'print',
+                text: 'Imprimir',
+                title: 'Reporte Visitas',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5,6,7,8,9,10],
+                    format: {
+                        body: function (data, row, column, node) {
+                            if (column === 9) {
+                                const hidden = $(node).find('span[style*="display:none"]').html();
+                                if (hidden) {
+                                    return hidden.replace(/<br\s*\/?>/gi, '<br>');
+                                }
+                            }
+                            return $(node).text().trim();
+                        }
+                    }
+                },
+                customize: function (win) {
+                    $(win.document.body).find('table tbody td').each(function() {
+                        $(this).html($(this).html().replace(/\n/g, '<br>'));
+                    });
+                }
+            }
+        ]
+    },
+    {
+        extend: 'colvis',
+        text: 'Visor de columnas',
+        collectionLayout: 'fixed three-column'
+    }
+],
+
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
 </script>
