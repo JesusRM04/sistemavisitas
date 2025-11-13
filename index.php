@@ -198,6 +198,39 @@ $visitas_aprobadas = obtener_visitas_aprobadas($pdo);
             </div>
           </div>
         <?php } ?>
+        
+                <!-- Tarjeta Reportes -->
+              <div class="col-lg-3 col-6">
+                <div class="small-box" style="background-color: #611232; color: white">
+                  <div class="inner">
+                    <?php
+                      // Contar visitas del mes actual
+                      $mes_actual = date('Y-m');
+                      $contador_visitas_mes = 0;
+                      foreach ($visitas_datos as $visita) {
+                        if (strpos($visita['fecha_hora'], $mes_actual) === 0) {
+                          $contador_visitas_mes++;
+                        }
+                      }
+                      foreach ($visitas_aprobadas as $visita) {
+                        if (strpos($visita['fecha_hora'], $mes_actual) === 0) {
+                          $contador_visitas_mes++;
+                        }
+                      }
+                    ?>
+                    <h3><?php echo $contador_visitas_mes; ?></h3>
+                    <p>Visitas Este Mes</p>
+                  </div>
+                  <a href="./reportes/visitas_mes.php">
+                    <div class="icon">
+                      <i class="fas fa-chart-bar" style="color: white;"></i>
+                    </div>
+                  </a>
+                  <a href="./reportes/visitas_mes.php" class="small-box-footer">
+                    Ver Reporte <i class="fas fa-arrow-circle-right"></i>
+                  </a>
+                </div>
+              </div>
 
       </div>
     </div>

@@ -356,6 +356,8 @@
               </ul>
             </li>
 
+               
+
             <!-- Apartado Delegados -->
             <?php if ($rol_sesion == 'ADMINISTRADOR') { ?>
               <li class="nav-item">
@@ -382,6 +384,25 @@
                 </ul>
               </li>
             <?php } ?>
+
+                     <!-- Apartado Reportes -->
+            <li class="nav-item">
+              <a href="#" class="nav-link active" style="background-color: #611232;">
+                <i class="nav-icon fas fa-chart-bar"></i>
+                <p>
+                  Reportes
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?php echo $URL; ?>/reportes/visitas_mes.php" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Visitas del Mes</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
 
             <!-- Cerrar Sesión -->
             <li class="nav-item">
