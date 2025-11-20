@@ -13,6 +13,19 @@ include('../app/controllers/visitas/show.php');
 $fecha_solo = date('Y-m-d', strtotime($fecha_hora));
 $hora_solo = date('H:i', strtotime($fecha_hora));
 
+// Asegurar que fecha_fin existe
+if (!empty($fecha_fin)) {
+    $fecha_fin_solo = date('Y-m-d', strtotime($fecha_fin));
+    $hora_fin_solo  = date('H:i', strtotime($fecha_fin));
+} else {
+    $fecha_fin_solo = '';
+    $hora_fin_solo  = '';
+}
+
+// Separar fecha y hora de fecha_fin
+$fecha_fin_solo = date('Y-m-d', strtotime($fecha_fin));
+$hora_fin_solo = date('H:i', strtotime($fecha_fin));
+
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -96,7 +109,7 @@ $hora_solo = date('H:i', strtotime($fecha_hora));
                                                                 <select name="id_delegado" id="" class="form-control" required>
                                                                     <?php
                                                                     foreach ($delegados_datos as $delegados_dato) {
-                                                                        $selected = ($delegados_dato['nombre'] == $nombre_delegado) ? 'selected' : '';
+                                                                        $selected = ($delegados_dato['nombres'] == $nombre_delegado) ? 'selected' : '';
                                                                         ?>
                                                                         <option value="<?php echo $delegados_dato['id_delegado']; ?>" <?php echo $selected; ?>>
                                                                             <?php echo $delegados_dato['nombres']; ?>
@@ -176,6 +189,20 @@ $hora_solo = date('H:i', strtotime($fecha_hora));
                                                     <input type="time" id="hora_visita" name="hora_visita" value="<?php echo $hora_solo; ?>" class="form-control" required>
                                                     <small class="text-muted">Formato 24 horas</small>
                                                 </div>
+
+                                                <!-- Apartado para Fecha Fin -->
+                                                <div class="form-group">
+                                                    <label for="">Fecha Fin de Visita:</label>
+                                                    <input type="date" id="fecha_fin" name="fecha_fin" value="<?php echo $fecha_fin_solo; ?>" class="form-control" required>
+                                                    <small id="errorFechaFin" style="color: red; display: none;">La fecha fin debe ser posterior a la fecha de inicio</small>
+                                                </div>
+
+                                                <!-- Apartado para Hora Fin -->
+                                                <div class="form-group">
+                                                    <label for="">Hora Fin de Visita:</label>
+                                                    <input type="time" id="hora_fin" name="hora_fin" value="<?php echo $hora_fin_solo; ?>" class="form-control" required>
+                                                    <small class="text-muted">Formato 24 horas</small>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -207,24 +234,53 @@ $hora_solo = date('H:i', strtotime($fecha_hora));
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const inputFecha = document.getElementById('fecha_ingreso');
+        const inputHora = document.getElementById('hora_visita');
+        const inputFechaFin = document.getElementById('fecha_fin');
+        const inputHoraFin = document.getElementById('hora_fin');
         const errorFecha = document.getElementById('errorFecha');
+        const errorFechaFin = document.getElementById('errorFechaFin');
 
         // Establecer fecha mínima (hoy)
         const hoy = new Date().toISOString().split('T')[0];
         inputFecha.setAttribute('min', hoy);
+        inputFechaFin.setAttribute('min', hoy);
 
-        // Validar al cambiar la fecha
-        inputFecha.addEventListener('change', function() {
-            const fechaSeleccionada = new Date(this.value);
+        // Función para validar fecha de inicio
+        function validarFechaInicio() {
+            const fechaSeleccionada = new Date(inputFecha.value);
             const fechaActual = new Date();
             fechaActual.setHours(0, 0, 0, 0);
 
             if (fechaSeleccionada < fechaActual) {
                 errorFecha.style.display = 'block';
-                this.value = '';
+                inputFecha.value = '';
+                return false;
             } else {
                 errorFecha.style.display = 'none';
+                return true;
             }
+        }
+
+        // Función para validar fecha fin
+        function validarFechaFin() {
+            const fechaInicio = new Date(inputFecha.value + 'T' + inputHora.value);
+            const fechaFin = new Date(inputFechaFin.value + 'T' + inputHoraFin.value);
+
+            if (fechaFin <= fechaInicio) {
+                errorFechaFin.style.display = 'block';
+                return false;
+            } else {
+                errorFechaFin.style.display = 'none';
+                return true;
+            }
+        }
+
+        // Validar fecha de inicio al cambiar
+        inputFecha.addEventListener('change', validarFechaInicio);
+
+        // Validar fecha fin al cambiar cualquier campo relacionado
+        [inputFecha, inputHora, inputFechaFin, inputHoraFin].forEach(element => {
+            element.addEventListener('change', validarFechaFin);
         });
 
         // Validar al enviar el formulario
@@ -237,6 +293,16 @@ $hora_solo = date('H:i', strtotime($fecha_hora));
                 e.preventDefault();
                 errorFecha.style.display = 'block';
                 inputFecha.focus();
+                return;
+            }
+
+            const fechaInicio = new Date(inputFecha.value + 'T' + inputHora.value);
+            const fechaFin = new Date(inputFechaFin.value + 'T' + inputHoraFin.value);
+
+            if (fechaFin <= fechaInicio) {
+                e.preventDefault();
+                errorFechaFin.style.display = 'block';
+                inputFechaFin.focus();
             }
         });
     });

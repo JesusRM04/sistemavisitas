@@ -10,6 +10,9 @@ include('../app/controllers/visitas/show.php');
 $fecha_solo = date('d/m/Y', strtotime($fecha_hora));
 $hora_solo = date('H:i', strtotime($fecha_hora));
 
+$fecha_fin_solo = date('d/m/Y', strtotime($fecha_fin));
+$hora_fin_solo = date('H:i', strtotime($fecha_fin));
+
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -142,6 +145,17 @@ $hora_solo = date('H:i', strtotime($fecha_hora));
                                                 <div class="form-group">
                                                     <label for="">Hora de Visita:</label>
                                                     <input type="text" class="form-control" value="<?php echo $hora_solo; ?>" disabled>
+                                                </div>
+                                                 <!-- Apartado para Fecha Fin -->
+                                                <div class="form-group">
+                                                    <label for="">Fecha Fin de Visita:</label>
+                                                    <input type="text" class="form-control" value="<?php echo $fecha_fin_solo; ?>" disabled>
+                                                </div>
+
+                                                <!-- Apartado para Hora Fin -->
+                                                <div class="form-group">
+                                                    <label for="">Hora Fin de Visita:</label>
+                                                    <input type="text" class="form-control" value="<?php echo $hora_fin_solo; ?>" disabled>
                                                 </div>
                                             </div>
                                         </div>

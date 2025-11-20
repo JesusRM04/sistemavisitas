@@ -2,12 +2,13 @@
 
 $id_visita_get = $_GET['id'];
 
-$sql_visitas = "SELECT 
+$sql_visitas = "SELECT
     v.id_visita,
     u.nombre AS nombre_usuario,
     d.nombre AS nombre_delegado,
     a.nombre_area AS nombre_area,
     v.fecha_hora,
+    v.fecha_fin,
     v.motivo,
     v.institucion,
     v.estado,
@@ -28,6 +29,7 @@ foreach ($visitas_datos as $visita_dato){
     $nombre_delegado = $visita_dato['nombre_delegado'];
     $nombre_area = $visita_dato['nombre_area'];
     $fecha_hora = $visita_dato['fecha_hora'];
+    $fecha_fin = $visita_dato['fecha_fin'];  // ❗ ESTA FALTA
     $motivo = $visita_dato['motivo'];
     $institucion = $visita_dato['institucion'];
     $estado = $visita_dato['estado'];
