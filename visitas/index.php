@@ -52,9 +52,7 @@ include ('../app/controllers/visitas/listado_de_visitas.php');
                                        <th><center>Delegado</center></th>
                                        <th><center>Área</center></th>
                                        <th><center>Fecha Inicio</center></th>
-                                        <th><center>Hora Inicio</center></th>
-                                        <th><center>Fecha Fin</center></th>
-                                        <th><center>Hora Fin</center></th>
+                                       <th><center>Fecha Fin</center></th>
                                        <th><center>Motivo</center></th>
                                        <th><center>Estado</center></th>
                                        <th><center>Visitantes</center></th>
@@ -79,10 +77,8 @@ include ('../app/controllers/visitas/listado_de_visitas.php');
                                            <td><center><?php echo $visitas_dato['institucion'];?></center></td>
                                            <td><center><?php echo $visitas_dato['nombre_delegado'];?></center></td>
                                            <td><center><?php echo $visitas_dato['nombre_area'];?></center></td>
-                                           <td><center><?php echo $fecha_inicio;?></center></td>
-                                            <td><center><?php echo $hora_inicio;?></center></td>
-                                            <td><center><?php echo $fecha_fin;?></center></td>
-                                            <td><center><?php echo $hora_fin;?></center></td>
+                                           <td><center><?php echo $fecha_inicio . ' ' . $hora_inicio; ?></center></td>
+                                           <td><center><?php echo $fecha_fin . ' ' . $hora_fin; ?></center></td>
                                            <td><?php echo $visitas_dato['motivo'];?></td>
                                            <td><center><span class="badge badge-warning"><?php echo $visitas_dato['estado'];?></span></center></td>
                                            <td>
