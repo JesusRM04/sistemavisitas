@@ -155,29 +155,51 @@ include('../app/controllers/delegados/listado_de_delegados.php');
                                             </div>
 
                                             <div class="col-md-3">
-                                                <!-- Apartado para Fecha -->
+                                                <h5 class="text-center mb-3" style="color: #611232;">Periodo de Visita</h5>
+                                                
+                                                <!-- Fecha y Hora de Inicio -->
                                                 <div class="form-group">
-                                                    <label for="">Fecha de Visita:</label>
+                                                    <label for="">Fecha Inicio:</label>
                                                     <input type="date"
-                                                        name="fecha_visita"
-                                                        id="fecha_ingreso"
+                                                        name="fecha_inicio"
+                                                        id="fecha_inicio"
                                                         class="form-control"
                                                         required>
-                                                    <small class="text-danger" style="display:none;" id="errorFecha">
-                                                        Ingrese una Fecha Válida
-                                                    </small>
                                                 </div>
 
-                                                <!-- Apartado para Hora -->
                                                 <div class="form-group">
-                                                    <label for="">Hora de Visita:</label>
+                                                    <label for="">Hora Inicio:</label>
                                                     <input type="time"
-                                                        name="hora_visita"
-                                                        id="hora_visita"
+                                                        name="hora_inicio"
+                                                        id="hora_inicio"
                                                         class="form-control"
                                                         required>
-                                                    <small class="text-muted">Formato 24 horas</small>
                                                 </div>
+
+                                                <hr style="border-top: 2px dashed #b89457;">
+
+                                                <!-- Fecha y Hora de Fin -->
+                                                <div class="form-group">
+                                                    <label for="">Fecha Fin:</label>
+                                                    <input type="date"
+                                                        name="fecha_fin"
+                                                        id="fecha_fin"
+                                                        class="form-control"
+                                                        required>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="">Hora Fin:</label>
+                                                    <input type="time"
+                                                        name="hora_fin"
+                                                        id="hora_fin"
+                                                        class="form-control"
+                                                        required>
+                                                </div>
+
+                                                <small class="text-danger" style="display:none;" id="errorFechas">
+                                                    La fecha/hora de fin debe ser posterior a la de inicio
+                                                </small>
                                             </div>
                                         </div>
 
@@ -205,40 +227,87 @@ include('../app/controllers/delegados/listado_de_delegados.php');
 <?php include('../layout/mensajes.php'); ?>
 <?php include('../layout/parte2.php'); ?>
 
-<!-- Script para validar fecha en el formulario -->
+<!-- Script para validar fechas en el formulario -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const inputFecha = document.getElementById('fecha_ingreso');
-        const errorFecha = document.getElementById('errorFecha');
+        const fechaInicio = document.getElementById('fecha_inicio');
+        const horaInicio = document.getElementById('hora_inicio');
+        const fechaFin = document.getElementById('fecha_fin');
+        const horaFin = document.getElementById('hora_fin');
+        const errorFechas = document.getElementById('errorFechas');
+        const formulario = fechaInicio.form;
 
-        // Establecer fecha mínima (hoy)
-        const hoy = new Date().toISOString().split('T')[0];
-        inputFecha.setAttribute('min', hoy);
+        // Obtener fecha y hora actual
+        const ahora = new Date();
+        const hoy = ahora.toISOString().split('T')[0];
+        const horaActual = ahora.getHours().toString().padStart(2, '0') + ':' + ahora.getMinutes().toString().padStart(2, '0');
 
-        // Validar al cambiar la fecha
-        inputFecha.addEventListener('change', function() {
-            const fechaSeleccionada = new Date(this.value);
-            const fechaActual = new Date();
-            fechaActual.setHours(0, 0, 0, 0);
+        // Establecer fecha mínima (hoy) para fecha inicio
+        fechaInicio.setAttribute('min', hoy);
+        fechaFin.setAttribute('min', hoy);
 
-            if (fechaSeleccionada < fechaActual) {
-                errorFecha.style.display = 'block';
-                this.value = '';
-            } else {
-                errorFecha.style.display = 'none';
+        // Función para validar el rango de fechas
+        function validarRangoFechas() {
+            if (!fechaInicio.value || !horaInicio.value || !fechaFin.value || !horaFin.value) {
+                return true; // No validar si faltan datos
             }
+
+            const inicio = new Date(fechaInicio.value + 'T' + horaInicio.value);
+            const fin = new Date(fechaFin.value + 'T' + horaFin.value);
+            const ahoraDate = new Date();
+
+            // VALIDACIÓN 1: Si la fecha de inicio es HOY, la hora debe ser futura
+            if (fechaInicio.value === hoy) {
+                if (horaInicio.value <= horaActual) {
+                    errorFechas.textContent = 'La hora de inicio debe ser posterior a la hora actual (' + horaActual + ')';
+                    errorFechas.style.display = 'block';
+                    return false;
+                }
+            }
+
+            // VALIDACIÓN 2: La fecha de inicio no puede ser pasada
+            if (fechaInicio.value < hoy) {
+                errorFechas.textContent = 'La fecha de inicio no puede ser anterior a hoy';
+                errorFechas.style.display = 'block';
+                return false;
+            }
+
+            // VALIDACIÓN 3: La fecha/hora de fin debe ser posterior a la de inicio
+            if (fin <= inicio) {
+                if (fechaFin.value === fechaInicio.value) {
+                    errorFechas.textContent = 'La hora de fin debe ser posterior a la hora de inicio';
+                } else {
+                    errorFechas.textContent = 'La fecha/hora de fin debe ser posterior a la de inicio';
+                }
+                errorFechas.style.display = 'block';
+                return false;
+            }
+
+            errorFechas.style.display = 'none';
+            return true;
+        }
+
+        // Actualizar fecha fin mínima cuando cambia fecha inicio
+        fechaInicio.addEventListener('change', function() {
+            fechaFin.setAttribute('min', this.value);
+            if (fechaFin.value && fechaFin.value < this.value) {
+                fechaFin.value = this.value;
+            }
+            validarRangoFechas();
+        });
+
+        // Validar al cambiar cualquier campo
+        [fechaInicio, horaInicio, fechaFin, horaFin].forEach(campo => {
+            campo.addEventListener('change', validarRangoFechas);
+            campo.addEventListener('blur', validarRangoFechas);
         });
 
         // Validar al enviar el formulario
-        inputFecha.form.addEventListener('submit', function(e) {
-            const fechaSeleccionada = new Date(inputFecha.value);
-            const fechaActual = new Date();
-            fechaActual.setHours(0, 0, 0, 0);
-
-            if (fechaSeleccionada < fechaActual) {
+        formulario.addEventListener('submit', function(e) {
+            if (!validarRangoFechas()) {
                 e.preventDefault();
-                errorFecha.style.display = 'block';
-                inputFecha.focus();
+                errorFechas.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                fechaInicio.focus();
             }
         });
     });

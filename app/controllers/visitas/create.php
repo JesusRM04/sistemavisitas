@@ -8,21 +8,32 @@ $id_usuario         = $_POST['nombre_usuario'];
 $id_area            = $_POST['nombre_area'];       
 $id_delegado        = $_POST['nombre_delegado'];    
 $motivo             = $_POST['motivo'];
-$fecha_visita       = $_POST['fecha_visita'];
-$hora_visita        = $_POST['hora_visita'];
+$fecha_inicio       = $_POST['fecha_inicio'];
+$hora_inicio        = $_POST['hora_inicio'];
+$fecha_fin          = $_POST['fecha_fin'];
+$hora_fin           = $_POST['hora_fin'];
 $institucion        = $_POST['institucion'];
 $estado             = $_POST['estado'];
 $comentario_admin   = $_POST['comentario_admin'];
 $invitados_texto    = $_POST['invitados'];
 
-// Combinar fecha y hora en formato TIMESTAMP
-$fecha_hora = $fecha_visita . ' ' . $hora_visita . ':00';
+// Combinar fechas y horas en formato TIMESTAMP
+$fecha_hora_inicio = $fecha_inicio . ' ' . $hora_inicio . ':00';
+$fecha_hora_fin = $fecha_fin . ' ' . $hora_fin . ':00';
+
+// Validar que fecha fin sea posterior a fecha inicio
+if (strtotime($fecha_hora_fin) <= strtotime($fecha_hora_inicio)) {
+    $_SESSION['mensaje'] = "Error: La fecha/hora de fin debe ser posterior a la de inicio";
+    $_SESSION['icono'] = "error";
+    header('Location: '.$URL.'/visitas/create.php');
+    exit;
+}
 
 $sentencia = $pdo->prepare("
     INSERT INTO visitas 
-    ( id_usuario, id_delegado, id_area, fecha_hora, motivo, institucion, estado, comentario_admin, fecha_creacion ) 
+    ( id_usuario, id_delegado, id_area, fecha_hora, fecha_fin, motivo, institucion, estado, comentario_admin, fecha_creacion ) 
     VALUES 
-    ( :id_usuario, :id_delegado, :id_area, :fecha_hora, :motivo, :institucion, :estado, :comentario_admin, :fecha_creacion )
+    ( :id_usuario, :id_delegado, :id_area, :fecha_hora, :fecha_fin, :motivo, :institucion, :estado, :comentario_admin, :fecha_creacion )
 ");
 
 $fecha_creacion = date('Y-m-d H:i:s');
@@ -30,7 +41,8 @@ $fecha_creacion = date('Y-m-d H:i:s');
 $sentencia->bindParam(':id_usuario',       $id_usuario);
 $sentencia->bindParam(':id_delegado',      $id_delegado);
 $sentencia->bindParam(':id_area',          $id_area);
-$sentencia->bindParam(':fecha_hora',       $fecha_hora);
+$sentencia->bindParam(':fecha_hora',       $fecha_hora_inicio);
+$sentencia->bindParam(':fecha_fin',        $fecha_hora_fin);
 $sentencia->bindParam(':motivo',           $motivo);
 $sentencia->bindParam(':institucion',      $institucion);
 $sentencia->bindParam(':estado',           $estado);

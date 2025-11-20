@@ -48,6 +48,7 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                                        <th><center>Delegado</center></th>
                                        <th><center>Área</center></th>
                                        <th><center>Fecha</center></th>
+                                       <th><center>Fecha Fin</center></th>
                                        <th><center>Motivo</center></th>
                                        <th><center>Estado</center></th>
                                        <th><center>Visitantes</center></th>
@@ -67,12 +68,13 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                                            <td><center><?php echo $visitas_dato['nombre_delegado'];?></center></td>
                                            <td><center><?php echo $visitas_dato['nombre_area'];?></center></td>
                                            <td><center><?php echo $visitas_dato['fecha_hora'];?></center></td>
+                                           <td><center><?php echo $visitas_dato['fecha_fin'];?></center></td>
                                            <td><?php echo $visitas_dato['motivo'];?></td>
                                            <td><center><span class="badge badge-success"><?php echo $visitas_dato['estado'];?></span></center></td>
                                            <td>
                                                 <center>
                                                     <?php if (!empty($visitas_dato['invitados'])): ?>
-                                                    <span title="<?php echo str_replace('<br>', '&#10;', $visitas_dato['invitados']); ?>" 
+                                                    <span title="<?php echo str_replace('<br>', '&#10;', $visitas_dato['invitados']); ?>"
                                                         style="cursor: help; color: #007bff; white-space: pre-line;">Ver invitados</span>
                                                     <span style="display:none;"><?php echo $visitas_dato['invitados']; ?></span>
                                                     <?php else: ?>
@@ -150,10 +152,10 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                 text: 'Copiar',
                 title: 'Reporte Visitas',
                 exportOptions: {
-                    columns: [0,1,2,3,4,5,6,7,8,9],
+                    columns: [0,1,2,3,4,5,6,7,8,9,10],
                     format: {
                         body: function (data, row, column, node) {
-                            if (column === 8) { // Visitantes
+                            if (column === 9) { // Visitantes
                                 const hidden = $(node).find('span[style*="display:none"]').html();
                                 if (hidden) {
                                     // Convertimos <br> a salto de línea real
@@ -171,10 +173,10 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                 title: 'Reporte Visitas',
                 orientation: 'landscape',
                 exportOptions: {
-                    columns: [0,1,2,3,4,5,6,7,8,9],
+                    columns: [0,1,2,3,4,5,6,7,8,9,10],
                     format: {
                         body: function (data, row, column, node) {
-                            if (column === 8) {
+                            if (column === 9) {
                                 const hidden = $(node).find('span[style*="display:none"]').html();
                                 if (hidden) {
                                     // Sustituye <br> por salto de línea real
@@ -197,10 +199,10 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                 text: 'Exportar CSV',
                 title: 'Reporte Visitas',
                 exportOptions: {
-                    columns: [0,1,2,3,4,5,6,7,8,9],
+                    columns: [0,1,2,3,4,5,6,7,8,9,10],
                     format: {
                         body: function (data, row, column, node) {
-                            if (column === 8) {
+                            if (column === 9) {
                                 const hidden = $(node).find('span[style*="display:none"]').html();
                                 if (hidden) {
                                     return hidden.replace(/<br\s*\/?>/gi, '\n');
@@ -216,10 +218,10 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                 text: 'Exportar Excel',
                 title: 'Reporte Visitas',
                 exportOptions: {
-                    columns: [0,1,2,3,4,5,6,7,8,9],
+                    columns: [0,1,2,3,4,5,6,7,8,9,10],
                     format: {
                         body: function (data, row, column, node) {
-                            if (column === 8) {
+                            if (column === 9) {
                                 const hidden = $(node).find('span[style*="display:none"]').html();
                                 if (hidden) {
                                     // Excel sí interpreta \n como salto de línea dentro de la celda
@@ -236,10 +238,10 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                 text: 'Imprimir',
                 title: 'Reporte Visitas',
                 exportOptions: {
-                    columns: [0,1,2,3,4,5,6,7,8,9],
+                    columns: [0,1,2,3,4,5,6,7,8,9,10],
                     format: {
                         body: function (data, row, column, node) {
-                            if (column === 8) {
+                            if (column === 9) {
                                 const hidden = $(node).find('span[style*="display:none"]').html();
                                 if (hidden) {
                                     return hidden.replace(/<br\s*\/?>/gi, '<br>');
