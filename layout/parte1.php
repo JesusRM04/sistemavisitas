@@ -244,179 +244,60 @@
         </div>
 
         <!-- Sidebar Menu -->
-        <nav class="mt-2">
-          <ul
-            class="nav nav-pills nav-sidebar flex-column"
-            data-widget="treeview"
-            role="menu"
-            data-accordion="false">
-            <!-- Apartado Usuarios -->
-            <?php if ($rol_sesion == 'ADMINISTRADOR') { ?>
-              <li class="nav-item">
-                <a href="#" class="nav-link active" style="background-color: #611232;">
-                  <i class="nav-icon fas fa-users" style="color: white"></i>
-                  <p style="color: white">
-                    Usuarios
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
+                  <!-- Sidebar Menu -->
+          <nav class="mt-2">
+              <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                  
+                  <?php
+                  // Obtener módulos según permisos del usuario
+                  $menu_items = $permisos->getMenuItems();
+                  $color_toggle = true; // Alternar colores
+                  
+                  foreach ($menu_items as $item):
+                      $color = $color_toggle ? '#611232' : '#b89457';
+                      $color_toggle = !$color_toggle;
+                      
+                      $puede_crear = $item['puede_crear'];
+                  ?>
+                  
                   <li class="nav-item">
-                    <a href="<?php echo $URL; ?>/usuarios" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Listado de Usuarios</p>
-                    </a>
+                      <a href="#" class="nav-link active" style="background-color: <?php echo $color; ?>;">
+                          <i class="nav-icon <?php echo $item['icono']; ?>" style="color: white"></i>
+                          <p style="color: white">
+                              <?php echo ucfirst($item['nombre_modulo']); ?>
+                              <i class="right fas fa-angle-left"></i>
+                          </p>
+                      </a>
+                      <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                              <a href="<?php echo $URL . $item['ruta']; ?>" class="nav-link">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Listado de <?php echo ucfirst($item['nombre_modulo']); ?></p>
+                              </a>
+                          </li>
+                          
+                          <?php if ($puede_crear): ?>
+                          <li class="nav-item">
+                              <a href="<?php echo $URL . $item['ruta']; ?>/create.php" class="nav-link">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Crear <?php echo ucfirst($item['nombre_modulo']); ?></p>
+                              </a>
+                          </li>
+                          <?php endif; ?>
+                      </ul>
                   </li>
+                  
+                  <?php endforeach; ?>
+                  
+                  <!-- Cerrar Sesión -->
                   <li class="nav-item">
-                    <a href="<?php echo $URL; ?>/usuarios/create.php" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Creación de Usuarios</p>
-                    </a>
+                      <a href="<?php echo $URL; ?>/app/controllers/login/cerrar_sesion.php" class="nav-link" style="background-color: #b89457;">
+                          <i class="nav-icon fas fa-door-closed" style="color: white;"></i>
+                          <p style="color: white;">Cerrar Sesión</p>
+                      </a>
                   </li>
-                </ul>
-              </li>
-            <?php } ?>
-
-            <!-- Apartado Roles -->
-            <?php if ($rol_sesion == 'ADMINISTRADOR') { ?>
-              <li class="nav-item">
-                <a href="#" class="nav-link active " style="background-color: #b89457;">
-                  <i class="nav-icon fas fa-address-card"></i>
-                  <p>
-                    Roles
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="<?php echo $URL; ?>/roles" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Listado de Roles</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="<?php echo $URL; ?>/roles/create.php" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Creación de Roles</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-            <?php } ?>
-
-            <!-- Apartado Áreas -->
-            <?php if ($rol_sesion == 'ADMINISTRADOR') { ?>
-              <li class="nav-item">
-                <a href="#" class="nav-link active" style="background-color: #611232;">
-                  <i class="nav-icon fas fa-map"></i>
-                  <p>
-                    Áreas
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="<?php echo $URL; ?>/areas/index.php" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Listado de Áreas</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-            <?php } ?>
-
-            <!-- Apartado Visitas -->
-            <li class="nav-item">
-              <a href="#" class="nav-link active" style="background-color: #b89457;">
-                <i class="nav-icon fas fa-address-book"></i>
-                <p>
-                  Visitas
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="<?php echo $URL; ?>/visitas" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Visitas Pendientes</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?php echo $URL; ?>/visitas/aprobadas.php" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Visitas Autorizadas</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?php echo $URL; ?>/visitas/create.php" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Creación de Visita</p>
-                  </a>
-                </li>
               </ul>
-            </li>
-
-               
-
-            <!-- Apartado Delegados -->
-            <?php if ($rol_sesion == 'ADMINISTRADOR') { ?>
-              <li class="nav-item">
-                <a href="#" class="nav-link active" style="background-color: #611232;">
-                  <i class="nav-icon fas fa-user-tie"></i>
-                  <p>
-                    Delegados
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="<?php echo $URL; ?>/delegados" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Listado de Delegados</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="<?php echo $URL; ?>/delegados/create.php" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Creación de Delegados</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-            <?php } ?>
-
-                     <!-- Apartado Reportes -->
-            <li class="nav-item">
-              <a href="#" class="nav-link active" style="background-color: #611232;">
-                <i class="nav-icon fas fa-chart-bar"></i>
-                <p>
-                  Reportes
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="<?php echo $URL; ?>/reportes/visitas_mes.php" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Visitas del Mes</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-            <!-- Cerrar Sesión -->
-            <li class="nav-item">
-              <a href="<?php echo $URL; ?>/app/controllers/login/cerrar_sesion.php"
-                class="nav-link"
-                style="background-color: <?php echo ($rol_sesion == 'ADMINISTRADOR') ? '#b89457' : '#611232'; ?>;">
-                <i class="nav-icon fas fa-door-closed" style="color: white;"></i>
-                <p style="color: white;">
-                  Cerrar Sesión
-                </p>
-              </a>
-            </li>
-          </ul>
-        </nav>
+          </nav>
         <!-- Fin Sidebar Menu -->
       </div>
       <!-- Fin Sidebar -->

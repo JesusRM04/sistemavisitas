@@ -1,0 +1,119 @@
+Listado de rutas de carpetas
+El n£mero de serie del volumen es 0CD7-CBE7
+C:.
+³   BD_sistemavisitas.sql
+³   estructura.txt
+³   index.php
+³   info.php
+³   ScriptCrearBD.txt
+³   
+ÃÄÄÄapp
+³   ³   app.py
+³   ³   config.php
+³   ³   
+³   ÃÄÄÄconfig
+³   ³       cron_config.php
+³   ³       
+³   ÃÄÄÄcontrollers
+³   ³   ÃÄÄÄareas
+³   ³   ³       listado_de_areas.php
+³   ³   ³       registro_de_areas.php
+³   ³   ³       update_de_areas.php
+³   ³   ³       
+³   ³   ÃÄÄÄdelegados
+³   ³   ³       create.php
+³   ³   ³       delete_delegado.php
+³   ³   ³       listado_de_delegados.php
+³   ³   ³       show_delegado.php
+³   ³   ³       update.php
+³   ³   ³       update_delegado.php
+³   ³   ³       
+³   ³   ÃÄÄÄlogin
+³   ³   ³       cerrar_sesion.php
+³   ³   ³       ingreso.php
+³   ³   ³       
+³   ³   ÃÄÄÄroles
+³   ³   ³       create.php
+³   ³   ³       listado_de_roles.php
+³   ³   ³       update.php
+³   ³   ³       update_roles.php
+³   ³   ³       
+³   ³   ÃÄÄÄusuarios
+³   ³   ³       create.php
+³   ³   ³       delete_usuario.php
+³   ³   ³       listado_de_usuarios.php
+³   ³   ³       show_usuario.php
+³   ³   ³       update.php
+³   ³   ³       update_usuario.php
+³   ³   ³       
+³   ³   ÀÄÄÄvisitas
+³   ³           aprobar.php
+³   ³           create.php
+³   ³           cron_eliminar_visitas_produccion.php
+³   ³           cron_marcar_vencidas.php
+³   ³           delete_visita.php
+³   ³           listado_de_visitas.php
+³   ³           show.php
+³   ³           test_cron.php
+³   ³           update.php
+³   ³           visitas_aprobadas.php
+³   ³           
+³   ÃÄÄÄhelpers
+³   ³       PermisosHelper.php
+³   ³       
+³   ÃÄÄÄlogs
+³   ³       eliminacion_visitas.log
+³   ³       
+³   ÀÄÄÄ__pycache__
+³           app.cpython-312.pyc
+³           app.cpython-313.pyc
+³           
+ÃÄÄÄareas
+³       index.php
+³       
+ÃÄÄÄdelegados
+³       create.php
+³       delete.php
+³       index.php
+³       show.php
+³       update.php
+³       
+ÃÄÄÄlayout
+³       mensajes.php
+³       parte1.php
+³       parte2.php
+³       sesion.php
+³       
+ÃÄÄÄlogin
+³       index.php
+³       
+ÃÄÄÄpublic
+³   ÀÄÄÄimages
+³           1.png
+³           2.png
+³           infoteclogo.png
+³           user.png
+³           
+ÃÄÄÄreportes
+³       visitas_mes.php
+³       
+ÃÄÄÄroles
+³       create.php
+³       index.php
+³       update.php
+³       
+ÃÄÄÄusuarios
+³       create.php
+³       delete.php
+³       index.php
+³       show.php
+³       update.php
+³       
+ÀÄÄÄvisitas
+        aprobadas.php
+        create.php
+        delete.php
+        index.php
+        show.php
+        update.php
+        
