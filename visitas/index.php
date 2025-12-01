@@ -2,6 +2,10 @@
 include ('../app/config.php');
 include ('../layout/sesion.php');
 
+// 🔒 PROTEGER PÁGINA
+protegerPagina('visitas', 'ver');
+
+
 include ('../layout/parte1.php');
 
 
@@ -64,12 +68,19 @@ include ('../app/controllers/visitas/listado_de_visitas.php');
                                    <?php
                                    $contador = 0;
                                    foreach ($visitas_datos as $visitas_dato){
-                                       $id_visita = $visitas_dato['id_visita']; 
+                                       $id_visita = $visitas_dato['id_visita'];
+                                       $id_usuario_visita = $visitas_dato['id_usuario']; 
                                        // Separar fecha y hora
                                        $fecha_inicio = date('d/m/Y', strtotime($visitas_dato['fecha_hora']));
                                         $hora_inicio = date('H:i', strtotime($visitas_dato['fecha_hora']));
                                         $fecha_fin = date('d/m/Y', strtotime($visitas_dato['fecha_fin']));
                                         $hora_fin = date('H:i', strtotime($visitas_dato['fecha_fin']));
+
+                                        // 🔒 VERIFICAR SI PUEDE MODIFICAR ESTE REGISTRO
+                                       $puede_editar = tienePermiso('visitas', 'editar') && 
+                                                      $permisos->puedeModificarRegistro('visitas', $id_usuario_visita);
+                                       $puede_eliminar = tienePermiso('visitas', 'eliminar') && 
+                                                        $permisos->puedeModificarRegistro('visitas', $id_usuario_visita);
                                        ?>
                                        <tr>
                                            <td><center><?php echo $contador = $contador + 1; ?></center></td>
@@ -96,10 +107,30 @@ include ('../app/controllers/visitas/listado_de_visitas.php');
                                            <td>
                                                <center>
                                                    <div class="btn-group">
-                                                       <a href="show.php?id=<?php echo $id_visita; ?>" type="button" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Ver</a>
-                                                       <a href="update.php?id=<?php echo $id_visita; ?>" type="button" class="btn btn-success btn-sm"><i class="fa fa-pencil-alt"></i> Editar</a>
-                                                       <a href="delete.php?id=<?php echo $id_visita; ?>" type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Borrar</a>
-                                                       <a href="../app/controllers/visitas/aprobar.php?id=<?php echo $id_visita; ?>" type="button" class="btn btn-secondary btn-sm" onclick="return confirm('¿Está seguro de Autorizar esta Visita?')"><i class="fa fa-circle-check"></i> Autorizar</a>
+                                                       <a href="show.php?id=<?php echo $id_visita; ?>" type="button" class="btn btn-info btn-sm">
+                                                           <i class="fa fa-eye"></i> Ver
+                                                       </a>
+                                                       
+                                                       <?php if ($puede_editar): ?>
+                                                       <a href="update.php?id=<?php echo $id_visita; ?>" type="button" class="btn btn-success btn-sm">
+                                                           <i class="fa fa-pencil-alt"></i> Editar
+                                                       </a>
+                                                       <?php endif; ?>
+                                                       
+                                                       <?php if ($puede_eliminar): ?>
+                                                       <a href="delete.php?id=<?php echo $id_visita; ?>" type="button" class="btn btn-danger btn-sm">
+                                                           <i class="fa fa-trash"></i> Borrar
+                                                       </a>
+                                                       <?php endif; ?>
+                                                       
+                                                       <?php if (tienePermiso('visitas', 'editar') && $permisos->puedoVerTodos('visitas')): ?>
+                                                       <a href="../app/controllers/visitas/aprobar.php?id=<?php echo $id_visita; ?>" 
+                                                          type="button" 
+                                                          class="btn btn-secondary btn-sm" 
+                                                          onclick="return confirm('¿Está seguro de Autorizar esta Visita?')">
+                                                           <i class="fa fa-circle-check"></i> Autorizar
+                                                       </a>
+                                                       <?php endif; ?>
                                                    </div>
                                                </center>
                                            </td>

@@ -2,12 +2,29 @@
 include('../app/config.php');
 include('../layout/sesion.php');
 
+// 🔒 PROTEGER PÁGINA
+protegerPagina('visitas', 'editar');
+
 include('../layout/parte1.php');
 
 include('../app/controllers/usuarios/listado_de_usuarios.php');
 include('../app/controllers/delegados/listado_de_delegados.php');
 include('../app/controllers/areas/listado_de_areas.php');
 include('../app/controllers/visitas/show.php');
+
+// 🔒 VERIFICAR SI PUEDE EDITAR ESTA VISITA ESPECÍFICA
+$sql_check = "SELECT id_usuario FROM visitas WHERE id_visita = :id_visita";
+$stmt = $pdo->prepare($sql_check);
+$stmt->execute([':id_visita' => $id_visita_get]);
+$visita_check = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$permisos->puedeModificarRegistro('visitas', $visita_check['id_usuario'])) {
+    session_start();
+    $_SESSION['mensaje'] = "No tienes permiso para editar esta visita";
+    $_SESSION['icono'] = "error";
+    header('Location: ' . $URL . '/visitas');
+    exit();
+}
 
 // Separar fecha y hora del timestamp
 $fecha_solo = date('Y-m-d', strtotime($fecha_hora));
@@ -21,11 +38,6 @@ if (!empty($fecha_fin)) {
     $fecha_fin_solo = '';
     $hora_fin_solo  = '';
 }
-
-// Separar fecha y hora de fecha_fin
-$fecha_fin_solo = date('Y-m-d', strtotime($fecha_fin));
-$hora_fin_solo = date('H:i', strtotime($fecha_fin));
-
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -42,7 +54,6 @@ $hora_fin_solo = date('H:i', strtotime($fecha_fin));
     </div>
     <!-- /.content-header -->
 
-
     <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
@@ -56,7 +67,6 @@ $hora_fin_solo = date('H:i', strtotime($fecha_fin));
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
                                 </button>
                             </div>
-
                         </div>
 
                         <div class="card-body" style="display: block;">
@@ -240,12 +250,10 @@ $hora_fin_solo = date('H:i', strtotime($fecha_fin));
         const errorFecha = document.getElementById('errorFecha');
         const errorFechaFin = document.getElementById('errorFechaFin');
 
-        // Establecer fecha mínima (hoy)
         const hoy = new Date().toISOString().split('T')[0];
         inputFecha.setAttribute('min', hoy);
         inputFechaFin.setAttribute('min', hoy);
 
-        // Función para validar fecha de inicio
         function validarFechaInicio() {
             const fechaSeleccionada = new Date(inputFecha.value);
             const fechaActual = new Date();
@@ -261,7 +269,6 @@ $hora_fin_solo = date('H:i', strtotime($fecha_fin));
             }
         }
 
-        // Función para validar fecha fin
         function validarFechaFin() {
             const fechaInicio = new Date(inputFecha.value + 'T' + inputHora.value);
             const fechaFin = new Date(inputFechaFin.value + 'T' + inputHoraFin.value);
@@ -275,15 +282,12 @@ $hora_fin_solo = date('H:i', strtotime($fecha_fin));
             }
         }
 
-        // Validar fecha de inicio al cambiar
         inputFecha.addEventListener('change', validarFechaInicio);
 
-        // Validar fecha fin al cambiar cualquier campo relacionado
         [inputFecha, inputHora, inputFechaFin, inputHoraFin].forEach(element => {
             element.addEventListener('change', validarFechaFin);
         });
 
-        // Validar al enviar el formulario
         inputFecha.form.addEventListener('submit', function(e) {
             const fechaSeleccionada = new Date(inputFecha.value);
             const fechaActual = new Date();

@@ -2,9 +2,26 @@
 include('../app/config.php');
 include('../layout/sesion.php');
 
+// 🔒 PROTEGER PÁGINA
+protegerPagina('visitas', 'eliminar');
+
 include('../layout/parte1.php');
 
 include('../app/controllers/visitas/show.php');
+
+// 🔒 VERIFICAR SI PUEDE ELIMINAR ESTA VISITA ESPECÍFICA
+$sql_check = "SELECT id_usuario FROM visitas WHERE id_visita = :id_visita";
+$stmt = $pdo->prepare($sql_check);
+$stmt->execute([':id_visita' => $id_visita_get]);
+$visita_check = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$permisos->puedeModificarRegistro('visitas', $visita_check['id_usuario'])) {
+    session_start();
+    $_SESSION['mensaje'] = "No tienes permiso para eliminar esta visita";
+    $_SESSION['icono'] = "error";
+    header('Location: ' . $URL . '/visitas');
+    exit();
+}
 
 // Separar fecha y hora del timestamp
 $fecha_solo = date('d/m/Y', strtotime($fecha_hora));
@@ -12,7 +29,6 @@ $hora_solo = date('H:i', strtotime($fecha_hora));
 
 $fecha_fin_solo = date('d/m/Y', strtotime($fecha_fin));
 $hora_fin_solo = date('H:i', strtotime($fecha_fin));
-
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -29,7 +45,6 @@ $hora_fin_solo = date('H:i', strtotime($fecha_fin));
     </div>
     <!-- /.content-header -->
 
-
     <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
@@ -43,7 +58,6 @@ $hora_fin_solo = date('H:i', strtotime($fecha_fin));
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
                                 </button>
                             </div>
-
                         </div>
 
                         <div class="card-body" style="display: block;">
@@ -110,7 +124,6 @@ $hora_fin_solo = date('H:i', strtotime($fecha_fin));
                                                     </div>
                                                 </div>
 
-
                                                 <div class="row">
                                                     <!-- Apartado para Invitados -->
                                                     <div class="col-md-12">
@@ -129,7 +142,6 @@ $hora_fin_solo = date('H:i', strtotime($fecha_fin));
                                                             <textarea name="comentario_admin" cols="30" rows="3" class="form-control" disabled><?php echo $comentario_admin; ?></textarea>
                                                         </div>
                                                     </div>
-
                                                 </div>
 
                                             </div>

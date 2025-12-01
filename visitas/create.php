@@ -2,13 +2,14 @@
 include('../app/config.php');
 include('../layout/sesion.php');
 
-include('../layout/parte1.php');
+// 🔒 PROTEGER PÁGINA - Solo usuarios con permiso de crear
+protegerPagina('visitas', 'crear');
 
+include('../layout/parte1.php');
 include('../app/controllers/visitas/listado_de_visitas.php');
 include('../app/controllers/usuarios/listado_de_usuarios.php');
 include('../app/controllers/areas/listado_de_areas.php');
 include('../app/controllers/delegados/listado_de_delegados.php');
-
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -25,7 +26,6 @@ include('../app/controllers/delegados/listado_de_delegados.php');
     </div>
     <!-- /.content-header -->
 
-
     <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
@@ -39,7 +39,6 @@ include('../app/controllers/delegados/listado_de_delegados.php');
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
                                 </button>
                             </div>
-
                         </div>
 
                         <div class="card-body" style="display: block;">
@@ -129,7 +128,6 @@ include('../app/controllers/delegados/listado_de_delegados.php');
                                                     </div>
                                                 </div>
 
-
                                                 <div class="row">
                                                     <!-- Apartado para Invitados -->
                                                     <div class="col-md-12">
@@ -149,7 +147,6 @@ include('../app/controllers/delegados/listado_de_delegados.php');
                                                             <textarea name="comentario_admin" id="" cols="30" rows="3" class="form-control"></textarea>
                                                         </div>
                                                     </div>
-
                                                 </div>
 
                                             </div>
@@ -237,26 +234,21 @@ include('../app/controllers/delegados/listado_de_delegados.php');
         const errorFechas = document.getElementById('errorFechas');
         const formulario = fechaInicio.form;
 
-        // Obtener fecha y hora actual
         const ahora = new Date();
         const hoy = ahora.toISOString().split('T')[0];
         const horaActual = ahora.getHours().toString().padStart(2, '0') + ':' + ahora.getMinutes().toString().padStart(2, '0');
 
-        // Establecer fecha mínima (hoy) para fecha inicio
         fechaInicio.setAttribute('min', hoy);
         fechaFin.setAttribute('min', hoy);
 
-        // Función para validar el rango de fechas
         function validarRangoFechas() {
             if (!fechaInicio.value || !horaInicio.value || !fechaFin.value || !horaFin.value) {
-                return true; // No validar si faltan datos
+                return true;
             }
 
             const inicio = new Date(fechaInicio.value + 'T' + horaInicio.value);
             const fin = new Date(fechaFin.value + 'T' + horaFin.value);
-            const ahoraDate = new Date();
 
-            // VALIDACIÓN 1: Si la fecha de inicio es HOY, la hora debe ser futura
             if (fechaInicio.value === hoy) {
                 if (horaInicio.value <= horaActual) {
                     errorFechas.textContent = 'La hora de inicio debe ser posterior a la hora actual (' + horaActual + ')';
@@ -265,14 +257,12 @@ include('../app/controllers/delegados/listado_de_delegados.php');
                 }
             }
 
-            // VALIDACIÓN 2: La fecha de inicio no puede ser pasada
             if (fechaInicio.value < hoy) {
                 errorFechas.textContent = 'La fecha de inicio no puede ser anterior a hoy';
                 errorFechas.style.display = 'block';
                 return false;
             }
 
-            // VALIDACIÓN 3: La fecha/hora de fin debe ser posterior a la de inicio
             if (fin <= inicio) {
                 if (fechaFin.value === fechaInicio.value) {
                     errorFechas.textContent = 'La hora de fin debe ser posterior a la hora de inicio';
@@ -287,7 +277,6 @@ include('../app/controllers/delegados/listado_de_delegados.php');
             return true;
         }
 
-        // Actualizar fecha fin mínima cuando cambia fecha inicio
         fechaInicio.addEventListener('change', function() {
             fechaFin.setAttribute('min', this.value);
             if (fechaFin.value && fechaFin.value < this.value) {
@@ -296,13 +285,11 @@ include('../app/controllers/delegados/listado_de_delegados.php');
             validarRangoFechas();
         });
 
-        // Validar al cambiar cualquier campo
         [fechaInicio, horaInicio, fechaFin, horaFin].forEach(campo => {
             campo.addEventListener('change', validarRangoFechas);
             campo.addEventListener('blur', validarRangoFechas);
         });
 
-        // Validar al enviar el formulario
         formulario.addEventListener('submit', function(e) {
             if (!validarRangoFechas()) {
                 e.preventDefault();

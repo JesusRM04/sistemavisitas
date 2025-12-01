@@ -1,10 +1,35 @@
 <?php
-include ('../../config.php');
+include('../../config.php');
 
-// Asegurar zona horaria consistente (si ya lo pones en config.php puedes quitar esta línea)
 date_default_timezone_set('America/Mexico_City');
 
 session_start();
+
+// 🔒 CARGAR SISTEMA DE PERMISOS
+require_once __DIR__ . '/../../helpers/PermisosHelper.php';
+
+// Obtener datos de sesión
+$sql = "SELECT id_usuario, id_rol FROM usuarios WHERE correo = :email AND activo = TRUE";
+$query = $pdo->prepare($sql);
+$query->execute([':email' => $_SESSION['sesion_email']]);
+$usuario = $query->fetch(PDO::FETCH_ASSOC);
+
+if (!$usuario) {
+    $_SESSION['mensaje'] = "Sesión inválida";
+    $_SESSION['icono'] = "error";
+    header('Location: ' . $URL . '/login');
+    exit;
+}
+
+$permisos = new PermisosHelper($pdo, $usuario['id_rol'], $usuario['id_usuario']);
+
+// 🔒 VERIFICAR PERMISO GENERAL DE EDITAR
+if (!$permisos->puedeEditar('visitas')) {
+    $_SESSION['mensaje'] = "No tienes permiso para editar visitas";
+    $_SESSION['icono'] = "error";
+    header('Location: ' . $URL . '/visitas');
+    exit;
+}
 
 // Recibir datos del formulario
 $id_visita = $_POST['id_visita'];
@@ -21,15 +46,32 @@ $estado = isset($_POST['estado']) ? trim($_POST['estado']) : '';
 $comentario_admin = isset($_POST['comentario_admin']) ? trim($_POST['comentario_admin']) : '';
 $invitados_texto = isset($_POST['invitados']) ? trim($_POST['invitados']) : '';
 
-// Combinar fechas y horas en formato TIMESTAMP (mismo estilo que en create)
+// 🔒 VERIFICAR PROPIETARIO DE LA VISITA
+$sql_check = "SELECT id_usuario FROM visitas WHERE id_visita = :id_visita";
+$stmt_check = $pdo->prepare($sql_check);
+$stmt_check->execute([':id_visita' => $id_visita]);
+$visita = $stmt_check->fetch(PDO::FETCH_ASSOC);
+
+if (!$visita) {
+    $_SESSION['mensaje'] = "Visita no encontrada";
+    $_SESSION['icono'] = "error";
+    header('Location: ' . $URL . '/visitas');
+    exit;
+}
+
+// 🔒 VERIFICAR SI PUEDE MODIFICAR ESTE REGISTRO ESPECÍFICO
+if (!$permisos->puedeModificarRegistro('visitas', $visita['id_usuario'])) {
+    $_SESSION['mensaje'] = "No tienes permiso para editar esta visita";
+    $_SESSION['icono'] = "error";
+    header('Location: ' . $URL . '/visitas');
+    exit;
+}
+
+// Combinar fechas y horas en formato TIMESTAMP
 $fecha_hora_inicio = $fecha_inicio . ' ' . $hora_inicio . ':00';
 $fecha_hora_fin = $fecha_fin . ' ' . $hora_fin . ':00';
 
-// --- Validaciones igual que en create.php (mismo enfoque) --- //
 // Validar que fecha fin sea posterior a fecha inicio
-
-error_log("INICIO: $fecha_hora_inicio");
-error_log("FIN:    $fecha_hora_fin");
 if (strtotime($fecha_hora_fin) <= strtotime($fecha_hora_inicio)) {
     $_SESSION['mensaje'] = "Error: La fecha/hora de fin debe ser posterior a la de inicio";
     $_SESSION['icono'] = "error";
@@ -37,7 +79,7 @@ if (strtotime($fecha_hora_fin) <= strtotime($fecha_hora_inicio)) {
     exit;
 }
 
-// Validar que la fecha de inicio no sea anterior a ahora (opcional, si quieres mantenerlo)
+// Validar que la fecha de inicio no sea anterior a ahora
 $fecha_actual = date('Y-m-d H:i:s');
 if (strtotime($fecha_hora_inicio) < strtotime($fecha_actual)) {
     $_SESSION['mensaje'] = "Error: La fecha/hora de inicio no puede ser anterior a la fecha y hora actual";
@@ -45,7 +87,6 @@ if (strtotime($fecha_hora_inicio) < strtotime($fecha_actual)) {
     header('Location: '.$URL.'/visitas/update.php?id='.$id_visita);
     exit;
 }
-// ------------------------------------------------------------ //
 
 try {
     // Actualizar visita en la base de datos
@@ -79,10 +120,9 @@ try {
         $delete_invitados = $pdo->prepare("DELETE FROM invitados WHERE id_visita = :id_visita");
         $delete_invitados->execute([':id_visita' => $id_visita]);
 
-        // Procesar nuevos invitados (separar por líneas)
+        // Procesar nuevos invitados
         $invitados_array = array_filter(array_map('trim', explode("\n", $invitados_texto)));
 
-        // Insertar cada invitado
         $sentencia_invitado = $pdo->prepare("
             INSERT INTO invitados (id_visita, nombre, fecha_creacion)
             VALUES (:id_visita, :nombre, :fecha_creacion)
@@ -111,7 +151,6 @@ try {
         exit;
     }
 } catch (Exception $e) {
-    // Manejo de errores (útil para debug en desarrollo)
     $_SESSION['mensaje'] = "Error en el servidor: " . $e->getMessage();
     $_SESSION['icono'] = "error";
     header('Location: '.$URL.'/visitas/update.php?id='.$id_visita);

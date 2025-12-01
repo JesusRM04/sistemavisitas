@@ -244,60 +244,81 @@
         </div>
 
         <!-- Sidebar Menu -->
-                  <!-- Sidebar Menu -->
-          <nav class="mt-2">
-              <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+              
+              <?php
+              // Obtener módulos según permisos del usuario
+              $menu_items = $permisos->getMenuItems();
+              $color_toggle = true; // Alternar colores
+              
+              foreach ($menu_items as $item):
+                  $color = $color_toggle ? '#611232' : '#b89457';
+                  $color_toggle = !$color_toggle;
                   
-                  <?php
-                  // Obtener módulos según permisos del usuario
-                  $menu_items = $permisos->getMenuItems();
-                  $color_toggle = true; // Alternar colores
-                  
-                  foreach ($menu_items as $item):
-                      $color = $color_toggle ? '#611232' : '#b89457';
-                      $color_toggle = !$color_toggle;
+                  $puede_crear = $item['puede_crear'];
+                  $nombre_modulo = $item['nombre_modulo'];
+              ?>
+              
+              <li class="nav-item">
+                  <a href="#" class="nav-link active" style="background-color: <?php echo $color; ?>;">
+                      <i class="nav-icon <?php echo $item['icono']; ?>" style="color: white"></i>
+                      <p style="color: white">
+                          <?php echo ucfirst($nombre_modulo); ?>
+                          <i class="right fas fa-angle-left"></i>
+                      </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                      <!-- ENLACE PRINCIPAL: Listado -->
+                      <li class="nav-item">
+                          <a href="<?php echo $URL . $item['ruta']; ?>" class="nav-link">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>
+                                  <?php 
+                                  // Para visitas mostramos "Pendientes"
+                                  if ($nombre_modulo == 'visitas') {
+                                      echo 'Visitas Pendientes';
+                                  } else {
+                                      echo 'Listado de ' . ucfirst($nombre_modulo);
+                                  }
+                                  ?>
+                              </p>
+                          </a>
+                      </li>
                       
-                      $puede_crear = $item['puede_crear'];
-                  ?>
-                  
-                  <li class="nav-item">
-                      <a href="#" class="nav-link active" style="background-color: <?php echo $color; ?>;">
-                          <i class="nav-icon <?php echo $item['icono']; ?>" style="color: white"></i>
-                          <p style="color: white">
-                              <?php echo ucfirst($item['nombre_modulo']); ?>
-                              <i class="right fas fa-angle-left"></i>
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="<?php echo $URL . $item['ruta']; ?>" class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Listado de <?php echo ucfirst($item['nombre_modulo']); ?></p>
-                              </a>
-                          </li>
-                          
-                          <?php if ($puede_crear): ?>
-                          <li class="nav-item">
-                              <a href="<?php echo $URL . $item['ruta']; ?>/create.php" class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Crear <?php echo ucfirst($item['nombre_modulo']); ?></p>
-                              </a>
-                          </li>
-                          <?php endif; ?>
-                      </ul>
-                  </li>
-                  
-                  <?php endforeach; ?>
-                  
-                  <!-- Cerrar Sesión -->
-                  <li class="nav-item">
-                      <a href="<?php echo $URL; ?>/app/controllers/login/cerrar_sesion.php" class="nav-link" style="background-color: #b89457;">
-                          <i class="nav-icon fas fa-door-closed" style="color: white;"></i>
-                          <p style="color: white;">Cerrar Sesión</p>
-                      </a>
-                  </li>
-              </ul>
-          </nav>
+                      <!-- 🆕 AGREGAR VISITAS APROBADAS (solo si es módulo de visitas) -->
+                      <?php if ($nombre_modulo == 'visitas'): ?>
+                      <li class="nav-item">
+                          <a href="<?php echo $URL; ?>/visitas/aprobadas.php" class="nav-link">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Visitas Aprobadas</p>
+                          </a>
+                      </li>
+                      <?php endif; ?>
+                      
+                      <!-- ENLACE CREAR (si tiene permiso) -->
+                      <?php if ($puede_crear): ?>
+                      <li class="nav-item">
+                          <a href="<?php echo $URL . $item['ruta']; ?>/create.php" class="nav-link">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Crear <?php echo ucfirst($nombre_modulo); ?></p>
+                          </a>
+                      </li>
+                      <?php endif; ?>
+                  </ul>
+              </li>
+              
+              <?php endforeach; ?>
+              
+              <!-- Cerrar Sesión -->
+              <li class="nav-item">
+                  <a href="<?php echo $URL; ?>/app/controllers/login/cerrar_sesion.php" class="nav-link" style="background-color: #b89457;">
+                      <i class="nav-icon fas fa-door-closed" style="color: white;"></i>
+                      <p style="color: white;">Cerrar Sesión</p>
+                  </a>
+              </li>
+          </ul>
+      </nav>
         <!-- Fin Sidebar Menu -->
       </div>
       <!-- Fin Sidebar -->

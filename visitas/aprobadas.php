@@ -2,10 +2,11 @@
 include ('../app/config.php');
 include ('../layout/sesion.php');
 
+// 🔒 PROTEGER PÁGINA
+protegerPagina('visitas', 'ver');
+
 include ('../layout/parte1.php');
-
 include ('../app/controllers/visitas/visitas_aprobadas.php');
-
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -60,7 +61,15 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                                    <?php
                                    $contador = 0;
                                    foreach ($visitas_datos as $visitas_dato){
-                                       $id_visita = $visitas_dato['id_visita']; ?>
+                                       $id_visita = $visitas_dato['id_visita'];
+                                       $id_usuario_visita = $visitas_dato['id_usuario']; // 🔑 IMPORTANTE
+                                       
+                                       // 🔒 VERIFICAR SI PUEDE MODIFICAR ESTE REGISTRO
+                                       $puede_editar = tienePermiso('visitas', 'editar') && 
+                                                      $permisos->puedeModificarRegistro('visitas', $id_usuario_visita);
+                                       $puede_eliminar = tienePermiso('visitas', 'eliminar') && 
+                                                        $permisos->puedeModificarRegistro('visitas', $id_usuario_visita);
+                                       ?>
                                        <tr>
                                            <td><center><?php echo $contador = $contador + 1; ?></center></td>
                                            <td><center><?php echo $visitas_dato['nombre_usuario'];?></center></td>
@@ -86,9 +95,21 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                                            <td>
                                                <center>
                                                    <div class="btn-group">
-                                                       <a href="show.php?id=<?php echo $id_visita; ?>" type="button" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Ver</a>
-                                                       <a href="update.php?id=<?php echo $id_visita; ?>" type="button" class="btn btn-success btn-sm"><i class="fa fa-pencil-alt"></i> Editar</a>
-                                                       <a href="delete.php?id=<?php echo $id_visita; ?>" type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Borrar</a>
+                                                       <a href="show.php?id=<?php echo $id_visita; ?>" type="button" class="btn btn-info btn-sm">
+                                                           <i class="fa fa-eye"></i> Ver
+                                                       </a>
+                                                       
+                                                       <?php if ($puede_editar): ?>
+                                                       <a href="update.php?id=<?php echo $id_visita; ?>" type="button" class="btn btn-success btn-sm">
+                                                           <i class="fa fa-pencil-alt"></i> Editar
+                                                       </a>
+                                                       <?php endif; ?>
+                                                       
+                                                       <?php if ($puede_eliminar): ?>
+                                                       <a href="delete.php?id=<?php echo $id_visita; ?>" type="button" class="btn btn-danger btn-sm">
+                                                           <i class="fa fa-trash"></i> Borrar
+                                                       </a>
+                                                       <?php endif; ?>
                                                    </div>
                                                </center>
                                            </td>
@@ -155,10 +176,9 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                     columns: [0,1,2,3,4,5,6,7,8,9,10],
                     format: {
                         body: function (data, row, column, node) {
-                            if (column === 9) { // Visitantes
+                            if (column === 9) {
                                 const hidden = $(node).find('span[style*="display:none"]').html();
                                 if (hidden) {
-                                    // Convertimos <br> a salto de línea real
                                     return hidden.replace(/<br\s*\/?>/gi, '\n');
                                 }
                             }
@@ -179,7 +199,6 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                             if (column === 9) {
                                 const hidden = $(node).find('span[style*="display:none"]').html();
                                 if (hidden) {
-                                    // Sustituye <br> por salto de línea real
                                     return hidden.replace(/<br\s*\/?>/gi, '\n');
                                 }
                             }
@@ -188,7 +207,6 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                     }
                 },
                 customize: function (doc) {
-                    // Ajusta tamaño y margen del PDF
                     doc.styles.tableBodyOdd.alignment = 'left';
                     doc.styles.tableBodyEven.alignment = 'left';
                     doc.defaultStyle.fontSize = 9;
@@ -224,7 +242,6 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                             if (column === 9) {
                                 const hidden = $(node).find('span[style*="display:none"]').html();
                                 if (hidden) {
-                                    // Excel sí interpreta \n como salto de línea dentro de la celda
                                     return hidden.replace(/<br\s*\/?>/gi, '\n');
                                 }
                             }
