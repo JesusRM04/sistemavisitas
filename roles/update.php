@@ -5,6 +5,7 @@ include('../layout/parte1.php');
 
 $id_rol_get = $_GET['id'];
 
+
 // Obtener datos del rol
 $sql_rol = "SELECT * FROM roles WHERE id_rol = :id_rol";
 $query_rol = $pdo->prepare($sql_rol);
@@ -21,7 +22,7 @@ $query_modulos->execute();
 $modulos = $query_modulos->fetchAll(PDO::FETCH_ASSOC);
 
 // Obtener permisos actuales del rol CON ALCANCE
-$sql_permisos = "SELECT id_modulo, puede_ver, puede_crear, puede_editar, puede_eliminar, alcance 
+$sql_permisos = "SELECT id_modulo, puede_ver, puede_crear, puede_editar, puede_eliminar, puede_aprobar, alcance 
                  FROM permisos WHERE id_rol = :id_rol";
 $query_permisos = $pdo->prepare($sql_permisos);
 $query_permisos->execute([':id_rol' => $id_rol_get]);
@@ -35,6 +36,7 @@ foreach ($permisos_actuales as $p) {
         'crear' => $p['puede_crear'],
         'editar' => $p['puede_editar'],
         'eliminar' => $p['puede_eliminar'],
+        'aprobar' => $p['puede_aprobar'],
         'alcance' => $p['alcance'] ?? 'todos'
     ];
 }
@@ -113,6 +115,9 @@ foreach ($permisos_actuales as $p) {
                                                 <th width="12%" class="text-center">
                                                     <i class="fas fa-trash"></i> Eliminar
                                                 </th>
+                                                <th width="10%" class="text-center">
+                                                    <i class="fas fa-check-circle"></i> Aprobar
+                                                </th>
                                                 <th width="17%" class="text-center">
                                                     <i class="fas fa-filter"></i> Alcance
                                                 </th>
@@ -123,11 +128,14 @@ foreach ($permisos_actuales as $p) {
                                         </thead>
                                         <tbody>
                                             <?php foreach ($modulos as $modulo): 
-                                                $id_mod = $modulo['id_modulo'];
+                                                $id_mod = isset($modulo['id_modulo']) ? (int)$modulo['id_modulo'] : 0;
+                                                if ($id_mod === 0) continue; // evita módulos corruptos
+
                                                 $tiene_ver = isset($permisos_rol[$id_mod]) && $permisos_rol[$id_mod]['ver'];
                                                 $tiene_crear = isset($permisos_rol[$id_mod]) && $permisos_rol[$id_mod]['crear'];
                                                 $tiene_editar = isset($permisos_rol[$id_mod]) && $permisos_rol[$id_mod]['editar'];
                                                 $tiene_eliminar = isset($permisos_rol[$id_mod]) && $permisos_rol[$id_mod]['eliminar'];
+                                                $tiene_aprobar = isset($permisos_rol[$id_mod]) && $permisos_rol[$id_mod]['aprobar'];
                                                 $alcance_actual = isset($permisos_rol[$id_mod]) ? $permisos_rol[$id_mod]['alcance'] : 'todos';
                                                 $tiene_todos = $tiene_ver && $tiene_crear && $tiene_editar && $tiene_eliminar;
                                             ?>
@@ -169,6 +177,14 @@ foreach ($permisos_actuales as $p) {
                                                            class="permiso-accion" 
                                                            data-modulo="<?php echo $id_mod; ?>"
                                                            <?php echo $tiene_eliminar ? 'checked' : ''; ?>>
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="checkbox" 
+                                                        name="permisos[<?php echo $id_mod; ?>][aprobar]" 
+                                                        value="1" 
+                                                        class="permiso-accion" 
+                                                        data-modulo="<?php echo $id_mod; ?>"
+                                                        <?php echo ($tiene_aprobar ?? false) ? 'checked' : ''; ?>>
                                                 </td>
                                                 <td class="text-center">
                                                     <select name="permisos[<?php echo $id_mod; ?>][alcance]" 
@@ -250,12 +266,13 @@ $(document).ready(function() {
     });
     
     // Actualizar "Todos" si se cambian checkboxes individuales
-    $('input[type="checkbox"]').not('.check-todos').on('change', function() {
+        $('input[type="checkbox"]').not('.check-todos').on('change', function() {
         var modulo = $(this).data('modulo');
         var total = $('input[data-modulo="' + modulo + '"]').not('.check-todos').length;
         var checkedCount = $('input[data-modulo="' + modulo + '"]:checked').not('.check-todos').length;
-        
+
         $('.check-todos[data-modulo="' + modulo + '"]').prop('checked', total === checkedCount);
     });
+
 });
 </script>

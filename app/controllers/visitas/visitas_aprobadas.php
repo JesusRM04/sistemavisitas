@@ -1,7 +1,16 @@
 <?php
-// Cargar helper de permisos
+/**
+ * Listado de visitas aprobadas
+ * Se usa en: visitas/aprobadas.php
+ * 
+ * NOTA: Ya NO se usa en index.php (ahí se llama directamente a la función)
+ */
 
-
+// Verificar que $permisos existe (debería venir de layout/sesion.php)
+if (!isset($permisos)) {
+    // Si no existe, algo está mal con la sesión
+    die("Error: No se cargaron los permisos correctamente");
+}
 
 // Construir filtro de alcance dinámicamente
 $filtro_alcance = $permisos->aplicarFiltroAlcance('visitas', 'id_usuario', 'v');

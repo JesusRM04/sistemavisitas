@@ -9,18 +9,43 @@ include('app/controllers/usuarios/listado_de_usuarios.php');
 include('app/controllers/roles/listado_de_roles.php');
 include('app/controllers/areas/listado_de_areas.php');
 include('app/controllers/delegados/listado_de_delegados.php');
-include ('app/controllers/visitas/listado_de_visitas.php');
-// función para obtener las aprobadas sin sobrescribir variables globales
-function obtener_visitas_aprobadas($pdo) {
-    ob_start(); // evita salida directa
-    include('app/controllers/visitas/visitas_aprobadas.php');
-    ob_end_clean(); // limpia cualquier salida accidental
-    return $visitas_datos; // devuelve las visitas aprobadas (usa el mismo nombre interno)
+include('app/controllers/visitas/listado_de_visitas.php');
+
+// ✅ SOLUCIÓN 2: Función mejorada que recibe $permisos
+function obtener_visitas_aprobadas($pdo, $permisos) {
+    // Construir filtro de alcance dinámicamente
+    $filtro_alcance = $permisos->aplicarFiltroAlcance('visitas', 'id_usuario', 'v');
+
+    $sql_visitas = "SELECT 
+        v.id_visita,
+        v.id_usuario,
+        u.nombre AS nombre_usuario,
+        d.nombre AS nombre_delegado,
+        a.nombre_area AS nombre_area,
+        v.fecha_hora,
+        v.fecha_fin,
+        v.motivo,
+        v.institucion,
+        v.estado,
+        v.comentario_admin,
+        STRING_AGG(i.nombre, '<br> ' ORDER BY i.fecha_creacion) AS invitados
+    FROM visitas v
+    JOIN usuarios u ON v.id_usuario = u.id_usuario
+    JOIN delegados d ON v.id_delegado = d.id_delegado
+    JOIN areas a ON v.id_area = a.id_area
+    LEFT JOIN invitados i ON v.id_visita = i.id_visita
+    WHERE v.estado = 'APROBADO'
+    $filtro_alcance
+    GROUP BY v.id_visita, v.id_usuario, u.nombre, d.nombre, a.nombre_area, v.fecha_hora, v.fecha_fin, v.motivo, v.institucion, v.estado, v.comentario_admin
+    ORDER BY v.fecha_hora DESC";
+
+    $query_visitas = $pdo->prepare($sql_visitas);
+    $query_visitas->execute();
+    return $query_visitas->fetchAll(PDO::FETCH_ASSOC);
 }
 
-$visitas_aprobadas = obtener_visitas_aprobadas($pdo);
-//include ('app/controllers/ventas/listado_de_ventas.php');
-//include ('app/controllers/clientes/listado_de_clientes.php');
+// 🔑 IMPORTANTE: Pasar tanto $pdo como $permisos
+$visitas_aprobadas = obtener_visitas_aprobadas($pdo, $permisos);
 ?>
 <!-- Contenedor Principal (contiene el contenido de la página) -->
 <div class="content-wrapper">

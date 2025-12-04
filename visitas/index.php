@@ -123,14 +123,14 @@ include ('../app/controllers/visitas/listado_de_visitas.php');
                                                        </a>
                                                        <?php endif; ?>
                                                        
-                                                       <?php if (tienePermiso('visitas', 'editar') && $permisos->puedoVerTodos('visitas')): ?>
-                                                       <a href="../app/controllers/visitas/aprobar.php?id=<?php echo $id_visita; ?>" 
-                                                          type="button" 
-                                                          class="btn btn-secondary btn-sm" 
-                                                          onclick="return confirm('¿Está seguro de Autorizar esta Visita?')">
-                                                           <i class="fa fa-circle-check"></i> Autorizar
-                                                       </a>
-                                                       <?php endif; ?>
+                                                      <?php if (tienePermiso('visitas', 'aprobar')): ?>
+                                                        <a href="../app/controllers/visitas/aprobar.php?id=<?php echo $id_visita; ?>" 
+                                                        type="button" 
+                                                        class="btn btn-secondary btn-sm" 
+                                                        onclick="return confirm('¿Está seguro de Autorizar esta Visita?')">
+                                                            <i class="fa fa-circle-check"></i> Autorizar
+                                                        </a>
+                                                      <?php endif; ?>
                                                    </div>
                                                </center>
                                            </td>

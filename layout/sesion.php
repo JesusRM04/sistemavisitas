@@ -99,6 +99,7 @@ function tienePermiso($modulo, $accion = 'ver') {
         case 'crear':    return $permisos->puedeCrear($modulo);
         case 'editar':   return $permisos->puedeEditar($modulo);
         case 'eliminar': return $permisos->puedeEliminar($modulo);
+        case 'aprobar':  return $permisos->puedeAprobar($modulo);
         default:         return false;
     }
 }

@@ -26,26 +26,27 @@ try {
     $stmt_delete = $pdo->prepare($sql_delete);
     $stmt_delete->execute([':id_rol' => $id_rol]);
     
-    // 3. Insertar los nuevos permisos CON ALCANCE
+    // 3. Insertar los nuevos permisos CON ALCANCE Y APROBAR
     $sql_permiso = "INSERT INTO permisos 
-        (id_rol, id_modulo, puede_ver, puede_crear, puede_editar, puede_eliminar, alcance) 
+        (id_rol, id_modulo, puede_ver, puede_crear, puede_editar, puede_eliminar, puede_aprobar, alcance) 
         VALUES 
-        (:id_rol, :id_modulo, :puede_ver, :puede_crear, :puede_editar, :puede_eliminar, :alcance)";
+        (:id_rol, :id_modulo, :puede_ver, :puede_crear, :puede_editar, :puede_eliminar, :puede_aprobar, :alcance)";
     
     $stmt_permiso = $pdo->prepare($sql_permiso);
     
     foreach ($permisos as $id_modulo => $acciones) {
-        $puede_ver = isset($acciones['ver']) ? true : false;
-        $puede_crear = isset($acciones['crear']) ? true : false;
-        $puede_editar = isset($acciones['editar']) ? true : false;
-        $puede_eliminar = isset($acciones['eliminar']) ? true : false;
+        $puede_ver      = isset($acciones['ver'])      ? 1 : 0;
+        $puede_crear    = isset($acciones['crear'])    ? 1 : 0;
+        $puede_editar   = isset($acciones['editar'])   ? 1 : 0;
+        $puede_eliminar = isset($acciones['eliminar']) ? 1 : 0;
+        $puede_aprobar  = isset($acciones['aprobar'])  ? 1 : 0;
         $alcance = isset($acciones['alcance']) ? $acciones['alcance'] : 'todos';
         
         // Solo insertar si tiene al menos un permiso
-        if ($puede_ver || $puede_crear || $puede_editar || $puede_eliminar) {
+        if ($puede_ver || $puede_crear || $puede_editar || $puede_eliminar || $puede_aprobar) {
             // Si tiene alguna acción, debe poder ver
-            if ($puede_crear || $puede_editar || $puede_eliminar) {
-                $puede_ver = true;
+            if ($puede_crear || $puede_editar || $puede_eliminar || $puede_aprobar) {
+                $puede_ver = 1;
             }
             
             $stmt_permiso->execute([
@@ -55,6 +56,7 @@ try {
                 ':puede_crear' => $puede_crear,
                 ':puede_editar' => $puede_editar,
                 ':puede_eliminar' => $puede_eliminar,
+                ':puede_aprobar' => $puede_aprobar, // 🆕 ESTO ES NUEVO
                 ':alcance' => $alcance
             ]);
         }

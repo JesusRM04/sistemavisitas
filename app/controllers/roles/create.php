@@ -51,6 +51,7 @@ try {
                 ':puede_crear' => $puede_crear,
                 ':puede_editar' => $puede_editar,
                 ':puede_eliminar' => $puede_eliminar,
+                ':puede_aprobar' => $puede_aprobar,
                 ':alcance' => $alcance
             ]);
         }

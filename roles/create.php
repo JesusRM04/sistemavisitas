@@ -78,6 +78,9 @@ $modulos = $query_modulos->fetchAll(PDO::FETCH_ASSOC);
                                                 <th width="12%" class="text-center">
                                                     <i class="fas fa-trash"></i> Eliminar
                                                 </th>
+                                                <th width="10%" class="text-center">
+                                                    <i class="fas fa-check-circle"></i> Aprobar
+                                                </th>
                                                 <th width="17%" class="text-center">
                                                     <i class="fas fa-filter"></i> Alcance
                                                 </th>
@@ -122,6 +125,14 @@ $modulos = $query_modulos->fetchAll(PDO::FETCH_ASSOC);
                                                            value="1" 
                                                            class="permiso-accion" 
                                                            data-modulo="<?php echo $modulo['id_modulo']; ?>">
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="checkbox" 
+                                                        name="permisos[<?php echo $modulo['id_modulo']; ?>][aprobar]" 
+                                                        value="1" 
+                                                        class="permiso-accion" 
+                                                        data-modulo="<?php echo $modulo['id_modulo']; ?>"
+                                                        <?php echo ($tiene_aprobar ?? false) ? 'checked' : ''; ?>>
                                                 </td>
                                                 <td class="text-center">
                                                     <select name="permisos[<?php echo $modulo['id_modulo']; ?>][alcance]" 

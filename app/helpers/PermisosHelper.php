@@ -28,6 +28,7 @@ class PermisosHelper {
             p.puede_crear,
             p.puede_editar,
             p.puede_eliminar,
+            p.puede_aprobar,
             p.alcance
         FROM permisos p
         JOIN modulos m ON p.id_modulo = m.id_modulo
@@ -43,7 +44,8 @@ class PermisosHelper {
                 'crear' => (bool)$permiso['puede_crear'],
                 'editar' => (bool)$permiso['puede_editar'],
                 'eliminar' => (bool)$permiso['puede_eliminar'],
-                'alcance' => $permiso['alcance'] // 'propios' o 'todos'
+                'aprobar' => (bool)$permiso['puede_aprobar'], // 🆕 NUEVO
+                'alcance' => $permiso['alcance']
             ];
         }
     }
@@ -74,6 +76,13 @@ class PermisosHelper {
      */
     public function puedeEliminar($modulo) {
         return isset($this->permisos_cache[$modulo]) && $this->permisos_cache[$modulo]['eliminar'];
+    }
+    
+    /**
+     * 🆕 NUEVO: Verificar si tiene permiso para APROBAR en un módulo
+     */
+    public function puedeAprobar($modulo) {
+        return isset($this->permisos_cache[$modulo]) && $this->permisos_cache[$modulo]['aprobar'];
     }
     
     /**
@@ -151,6 +160,9 @@ class PermisosHelper {
                 break;
             case 'eliminar':
                 $tiene_permiso = $this->puedeEliminar($modulo);
+                break;
+            case 'aprobar': // 🆕 NUEVO
+                $tiene_permiso = $this->puedeAprobar($modulo);
                 break;
         }
         
