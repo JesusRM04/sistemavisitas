@@ -2,43 +2,30 @@
 include ('../app/config.php');
 include ('../layout/sesion.php');
 
+// 🔒 PROTEGER PÁGINA
+protegerPagina('delegados', 'ver');
+
 include ('../layout/parte1.php');
 
-
 include ('../app/controllers/delegados/listado_de_delegados.php');
-
-
 ?>
 
-<!-- Contenedor Principal (contiene el contenido de la página) -->
+<!-- Content Wrapper -->
 <div class="content-wrapper">
-    <!-- Encabezado -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-12">
-                    <h1 class="m-0">LISTADO DE DELEGADOS</h1>
-                </div><!-- Fin columna -->
-            </div><!-- Fin fila -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- Fin Encabezado -->
-
-
-    <!-- Contenido Principal -->
+    <!-- ... código del header ... -->
+    
     <div class="content">
         <div class="container-fluid">
-
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-outline card-primary">
                         <div class="card-header">
                             <h3 class="card-title">DELEGADOS REGISTRADOS</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
                                 </button>
                             </div>
-
                         </div>
 
                         <div class="card-body" style="display: block;">
@@ -56,18 +43,34 @@ include ('../app/controllers/delegados/listado_de_delegados.php');
                                 <?php
                                 $contador = 0;
                                 foreach ($delegados_datos as $delegados_dato){
-                                    $id_delegado = $delegados_dato['id_delegado']; ?>
+                                    $id_delegado = $delegados_dato['id_delegado']; 
+                                    $contador++;
+                                    ?>
                                     <tr>
-                                        <td><center><?php echo $contador = $contador + 1;?></center></td>
+                                        <td><center><?php echo $contador; ?></center></td>
                                         <td><center><?php echo $delegados_dato['nombres'];?></center></td>
                                         <td><center><?php echo $delegados_dato['email'];?></center></td>
                                         <td><center><?php echo $delegados_dato['extension'];?></center></td>
                                         <td>
                                             <center>
                                                 <div class="btn-group">
-                                                    <a href="show.php?id=<?php echo $id_delegado; ?>" type="button" class="btn btn-info"><i class="fa fa-eye"></i> Ver</a>
-                                                    <a href="update.php?id=<?php echo $id_delegado; ?>" type="button" class="btn btn-success"><i class="fa fa-pencil-alt"></i> Editar</a>
-                                                    <a href="delete.php?id=<?php echo $id_delegado; ?>" type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Borrar</a>
+                                                    <?php if (tienePermiso('delegados', 'ver')): ?>
+                                                    <a href="show.php?id=<?php echo $id_delegado; ?>" class="btn btn-info">
+                                                        <i class="fa fa-eye"></i> Ver
+                                                    </a>
+                                                    <?php endif; ?>
+                                                    
+                                                    <?php if (tienePermiso('delegados', 'editar')): ?>
+                                                    <a href="update.php?id=<?php echo $id_delegado; ?>" class="btn btn-success">
+                                                        <i class="fa fa-pencil-alt"></i> Editar
+                                                    </a>
+                                                    <?php endif; ?>
+                                                    
+                                                    <?php if (tienePermiso('delegados', 'eliminar')): ?>
+                                                    <a href="delete.php?id=<?php echo $id_delegado; ?>" class="btn btn-danger">
+                                                        <i class="fa fa-trash"></i> Borrar
+                                                    </a>
+                                                    <?php endif; ?>
                                                 </div>
                                             </center>
                                         </td>
@@ -76,21 +79,14 @@ include ('../app/controllers/delegados/listado_de_delegados.php');
                                 }
                                 ?>
                                 </tbody>
-                                
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
-
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
     </div>
-    <!-- Fin Contenido Principal -->
 </div>
-<!-- Fin Contenedor Principal -->
-
 
 <?php include ('../layout/mensajes.php'); ?>
 <?php include ('../layout/parte2.php'); ?>

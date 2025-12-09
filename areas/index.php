@@ -1,6 +1,8 @@
 <?php
 include ('../app/config.php');
 include ('../layout/sesion.php');
+// 🔒 PROTEGER PÁGINA
+protegerPagina('areas', 'ver');
 
 include('../layout/parte1.php');
 
@@ -18,9 +20,11 @@ include ('../app/controllers/areas/listado_de_areas.php');
             <div class="row mb-2">
                 <div class="col-sm-12">
                     <h1 class="m-0">Listado de Áreas
+                        <?php if (tienePermiso('areas', 'crear')): ?>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-create">
                             <i class="fa fa-plus"></i> Agregar Nueva
                         </button>
+                        <?php endif; ?>
                     </h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -73,6 +77,7 @@ include ('../app/controllers/areas/listado_de_areas.php');
                                             <td><center><?php echo $areas_dato['nombre_area']; ?></center></td>
                                             <td>
                                                 <center>
+                                                    <?php if (tienePermiso('areas', 'editar')): ?>
                                                     <div class="btn-group">
                                                         <button type="button" class="btn btn-success" data-toggle="modal"
                                                             data-target="#modal-update<?php echo $id_area; ?>">
@@ -130,6 +135,7 @@ include ('../app/controllers/areas/listado_de_areas.php');
                                                         </script>
                                                         <div id="respuesta_update<?php echo $id_area; ?>"></div>
                                                     </div>
+                                                    <?php endif; ?>
                                                 </center>
                                             </td>
                                         </tr>
@@ -227,6 +233,7 @@ include ('../app/controllers/areas/listado_de_areas.php');
 
 
 <!-- Modal para Registrar Áreas -->
+ <?php if (tienePermiso('areas', 'crear')): ?>
 <div class="modal fade" id="modal-create">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -256,6 +263,7 @@ include ('../app/controllers/areas/listado_de_areas.php');
     </div>
     <!-- /.modal-dialog -->
 </div>
+<?php endif; ?>
 <!-- /.modal -->
 
 <script>

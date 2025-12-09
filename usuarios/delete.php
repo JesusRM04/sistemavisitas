@@ -2,6 +2,9 @@
 include('../app/config.php');
 include('../layout/sesion.php');
 
+// 🔒 PROTEGER PÁGINA
+protegerPagina('usuarios', 'eliminar');  // o 'ver', 'editar', 'eliminar' según corresponda
+
 include('../layout/parte1.php');
 
 include('../app/controllers/usuarios/show_usuario.php');

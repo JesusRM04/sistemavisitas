@@ -2,6 +2,10 @@
 include('../app/config.php');
 include('../layout/sesion.php');
 
+
+// 🔒 PROTEGER PÁGINA
+protegerPagina('delegados', 'ver');  // o 'ver', 'editar', 'eliminar' según corresponda
+
 include('../layout/parte1.php');
 
 include('../app/controllers/delegados/show_delegado.php');

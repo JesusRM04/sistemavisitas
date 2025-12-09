@@ -1,6 +1,11 @@
 <?php
 include('../app/config.php');
 include('../layout/sesion.php');
+
+// 🔒 PROTEGER PÁGINA
+protegerPagina('reportes', 'ver');
+
+
 include('../layout/parte1.php');
 
 // Obtener mes y año actual o del filtro

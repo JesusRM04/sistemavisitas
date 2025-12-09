@@ -16,4 +16,14 @@
 [2025-11-13 10:15:55] ✓ Conservadas 1 visitas futuras
 [2025-11-13 10:15:55] Limpieza de logs: eliminadas 1 entradas antiguas
 [2025-11-13 10:15:55] === PROCESO FINALIZADO EXITOSAMENTE ===
+[2025-12-05 02:00:01] === INICIO PROCESO DE ELIMINACIÓN DE VISITAS ===
+[2025-12-05 02:00:01] Procesando mes: November 2025
+[2025-12-05 02:00:01] Rango: 2025-11-01 al 2025-11-30
+[2025-12-05 02:00:01] Fecha límite: 2025-12-05 (solo se eliminan visitas anteriores)
+[2025-12-05 02:00:01] Visitas pasadas encontradas: 1
+[2025-12-05 02:00:01] Visitas futuras a conservar: 0
+[2025-12-05 02:00:01] ✓ ÉXITO: Eliminadas 1 visitas pasadas
+[2025-12-05 02:00:01] ✓ Conservadas 0 visitas futuras
+[2025-12-05 02:00:01] Limpieza de logs: eliminadas 1 entradas antiguas
+[2025-12-05 02:00:01] === PROCESO FINALIZADO EXITOSAMENTE ===
 

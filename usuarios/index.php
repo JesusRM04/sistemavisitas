@@ -2,6 +2,9 @@
 include ('../app/config.php');
 include ('../layout/sesion.php');
 
+// 🔒 PROTEGER PÁGINA
+protegerPagina('usuarios', 'ver');
+
 include ('../layout/parte1.php');
 
 
@@ -67,9 +70,23 @@ include ('../app/controllers/usuarios/listado_de_usuarios.php');
                                         <td>
                                             <center>
                                                 <div class="btn-group">
-                                                    <a href="show.php?id=<?php echo $id_usuario; ?>" type="button" class="btn btn-info"><i class="fa fa-eye"></i> Ver</a>
-                                                    <a href="update.php?id=<?php echo $id_usuario; ?>" type="button" class="btn btn-success"><i class="fa fa-pencil-alt"></i> Editar</a>
-                                                    <a href="delete.php?id=<?php echo $id_usuario; ?>" type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Borrar</a>
+                                                    <?php if (tienePermiso('usuarios', 'ver')): ?>
+                                                    <a href="show.php?id=<?php echo $id_usuario; ?>" class="btn btn-info">
+                                                        <i class="fa fa-eye"></i> Ver
+                                                    </a>
+                                                    <?php endif; ?>
+                                                    
+                                                    <?php if (tienePermiso('usuarios', 'editar')): ?>
+                                                    <a href="update.php?id=<?php echo $id_usuario; ?>" class="btn btn-success">
+                                                        <i class="fa fa-pencil-alt"></i> Editar
+                                                    </a>
+                                                    <?php endif; ?>
+                                                    
+                                                    <?php if (tienePermiso('usuarios', 'eliminar')): ?>
+                                                    <a href="delete.php?id=<?php echo $id_usuario; ?>" class="btn btn-danger">
+                                                        <i class="fa fa-trash"></i> Borrar
+                                                    </a>
+                                                    <?php endif; ?>
                                                 </div>
                                             </center>
                                         </td>

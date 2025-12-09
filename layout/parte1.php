@@ -244,81 +244,87 @@
         </div>
 
         <!-- Sidebar Menu -->
-                <nav class="mt-2">
-          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-              
-              <?php
-              // Obtener módulos según permisos del usuario
-              $menu_items = $permisos->getMenuItems();
-              $color_toggle = true; // Alternar colores
-              
-              foreach ($menu_items as $item):
-                  $color = $color_toggle ? '#611232' : '#b89457';
-                  $color_toggle = !$color_toggle;
-                  
-                  $puede_crear = $item['puede_crear'];
-                  $nombre_modulo = $item['nombre_modulo'];
-              ?>
-              
-              <li class="nav-item">
-                  <a href="#" class="nav-link active" style="background-color: <?php echo $color; ?>;">
-                      <i class="nav-icon <?php echo $item['icono']; ?>" style="color: white"></i>
-                      <p style="color: white">
-                          <?php echo ucfirst($nombre_modulo); ?>
-                          <i class="right fas fa-angle-left"></i>
-                      </p>
-                  </a>
-                  <ul class="nav nav-treeview">
-                      <!-- ENLACE PRINCIPAL: Listado -->
-                      <li class="nav-item">
-                          <a href="<?php echo $URL . $item['ruta']; ?>" class="nav-link">
-                              <i class="far fa-circle nav-icon"></i>
-                              <p>
-                                  <?php 
-                                  // Para visitas mostramos "Pendientes"
-                                  if ($nombre_modulo == 'visitas') {
-                                      echo 'Visitas Pendientes';
-                                  } else {
-                                      echo 'Listado de ' . ucfirst($nombre_modulo);
-                                  }
-                                  ?>
-                              </p>
-                          </a>
-                      </li>
-                      
-                      <!-- 🆕 AGREGAR VISITAS APROBADAS (solo si es módulo de visitas) -->
-                      <?php if ($nombre_modulo == 'visitas'): ?>
-                      <li class="nav-item">
-                          <a href="<?php echo $URL; ?>/visitas/aprobadas.php" class="nav-link">
-                              <i class="far fa-circle nav-icon"></i>
-                              <p>Visitas Aprobadas</p>
-                          </a>
-                      </li>
-                      <?php endif; ?>
-                      
-                      <!-- ENLACE CREAR (si tiene permiso) -->
-                      <?php if ($puede_crear): ?>
-                      <li class="nav-item">
-                          <a href="<?php echo $URL . $item['ruta']; ?>/create.php" class="nav-link">
-                              <i class="far fa-circle nav-icon"></i>
-                              <p>Crear <?php echo ucfirst($nombre_modulo); ?></p>
-                          </a>
-                      </li>
-                      <?php endif; ?>
-                  </ul>
-              </li>
-              
-              <?php endforeach; ?>
-              
-              <!-- Cerrar Sesión -->
-              <li class="nav-item">
-                  <a href="<?php echo $URL; ?>/app/controllers/login/cerrar_sesion.php" class="nav-link" style="background-color: #b89457;">
-                      <i class="nav-icon fas fa-door-closed" style="color: white;"></i>
-                      <p style="color: white;">Cerrar Sesión</p>
-                  </a>
-              </li>
-          </ul>
-      </nav>
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                
+                <?php
+                // Obtener módulos según permisos del usuario
+                $menu_items = $permisos->getMenuItems();
+                $color_toggle = true; // Alternar colores
+                
+                foreach ($menu_items as $item):
+                    $color = $color_toggle ? '#611232' : '#b89457';
+                    $color_toggle = !$color_toggle;
+                    
+                    $puede_crear = $item['puede_crear'];
+                    $nombre_modulo = $item['nombre_modulo'];
+                    
+                    // 🔥 EXCLUIR ÁREAS Y REPORTES DE TENER SUBMENÚ "CREAR"
+                    $mostrar_crear = $puede_crear && 
+                                    !in_array($nombre_modulo, ['areas', 'reportes']);
+                ?>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" style="background-color: <?php echo $color; ?>;">
+                        <i class="nav-icon <?php echo $item['icono']; ?>" style="color: white"></i>
+                        <p style="color: white">
+                            <?php echo ucfirst($nombre_modulo); ?>
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <!-- ENLACE PRINCIPAL: Listado -->
+                        <li class="nav-item">
+                            <a href="<?php echo $URL . $item['ruta']; ?>" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    <?php 
+                                    // Nombres personalizados según módulo
+                                    if ($nombre_modulo == 'visitas') {
+                                        echo 'Visitas Pendientes';
+                                    } elseif ($nombre_modulo == 'reportes') {
+                                        echo 'Reportes de Visitas';
+                                    } else {
+                                        echo 'Listado de ' . ucfirst($nombre_modulo);
+                                    }
+                                    ?>
+                                </p>
+                            </a>
+                        </li>
+                        
+                        <!-- 🆕 VISITAS APROBADAS (solo si es módulo de visitas) -->
+                        <?php if ($nombre_modulo == 'visitas'): ?>
+                        <li class="nav-item">
+                            <a href="<?php echo $URL; ?>/visitas/aprobadas.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Visitas Aprobadas</p>
+                            </a>
+                        </li>
+                        <?php endif; ?>
+                        
+                        <!-- ENLACE CREAR (solo si tiene permiso Y no es áreas ni reportes) -->
+                        <?php if ($mostrar_crear): ?>
+                        <li class="nav-item">
+                            <a href="<?php echo $URL . $item['ruta']; ?>/create.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Crear <?php echo ucfirst($nombre_modulo); ?></p>
+                            </a>
+                        </li>
+                        <?php endif; ?>
+                    </ul>
+                </li>
+                
+                <?php endforeach; ?>
+                
+                <!-- Cerrar Sesión -->
+                <li class="nav-item">
+                    <a href="<?php echo $URL; ?>/app/controllers/login/cerrar_sesion.php" class="nav-link" style="background-color: #b89457;">
+                        <i class="nav-icon fas fa-door-closed" style="color: white;"></i>
+                        <p style="color: white;">Cerrar Sesión</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
         <!-- Fin Sidebar Menu -->
       </div>
       <!-- Fin Sidebar -->
