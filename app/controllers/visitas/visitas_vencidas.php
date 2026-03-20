@@ -35,7 +35,7 @@ JOIN delegados d ON v.id_delegado = d.id_delegado
 JOIN areas a ON v.id_area = a.id_area
 JOIN usuarios u2 ON v.aprobador = u2.id_usuario
 LEFT JOIN invitados i ON v.id_visita = i.id_visita
-WHERE v.estado = 'APROBADO'
+WHERE v.estado = 'VENCIDO'
 $filtro_alcance
 GROUP BY v.id_visita, v.id_usuario, u.nombre, d.nombre, a.nombre_area, v.fecha_hora, v.fecha_fin, v.motivo, v.institucion, v.estado, v.comentario_admin, u2.nombre
 ORDER BY v.fecha_hora DESC";

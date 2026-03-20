@@ -6,7 +6,7 @@ include ('../layout/sesion.php');
 protegerPagina('visitas', 'ver');
 
 include ('../layout/parte1.php');
-include ('../app/controllers/visitas/visitas_aprobadas.php');
+include ('../app/controllers/visitas/visitas_vencidas.php');
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -16,7 +16,7 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <h1 class="m-0">Listado de Visitas Aprobadas</h1>
+                    <h1 class="m-0">Listado de Visitas vencidas</h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->

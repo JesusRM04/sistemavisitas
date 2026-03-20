@@ -21,6 +21,7 @@ if (!$usuario) {
 
 $permisos = new PermisosHelper($pdo, $usuario['id_rol'], $usuario['id_usuario']);
 
+
 // 🔒 VERIFICAR PERMISO DE EDITAR (para aprobar se necesita poder editar)
 if (!$permisos->puedeEditar('visitas')) {
     $_SESSION['mensaje'] = "No tienes permiso para aprobar visitas";
@@ -38,13 +39,17 @@ if (!$permisos->puedoVerTodos('visitas')) {
 }
 
 $id_visita = $_GET['id'];
+$id_usuario = $usuario['id_usuario'];
+
+
 
 // Actualizar el estado a APROBADO
 $sentencia = $pdo->prepare("UPDATE visitas
-    SET estado = 'APROBADO'
+    SET estado = 'APROBADO', aprobador = :id_usuario
     WHERE id_visita = :id_visita ");
 
 $sentencia->bindParam('id_visita', $id_visita);
+$sentencia->bindParam('id_usuario', $id_usuario);
 
 if($sentencia->execute()){
     $_SESSION['mensaje'] = "Visita Autorizada Correctamente";

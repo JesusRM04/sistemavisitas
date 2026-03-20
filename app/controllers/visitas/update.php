@@ -1,12 +1,17 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 include('../../config.php');
 
 date_default_timezone_set('America/Mexico_City');
 
 session_start();
+//obtener el id del usuario que modifica la visita 
 
 // 🔒 CARGAR SISTEMA DE PERMISOS
 require_once __DIR__ . '/../../helpers/PermisosHelper.php';
+require_once __DIR__ . '/../../config/utils/mail.php';
+
 
 // Obtener datos de sesión
 $sql = "SELECT id_usuario, id_rol FROM usuarios WHERE correo = :email AND activo = TRUE";
@@ -46,6 +51,9 @@ $estado = isset($_POST['estado']) ? trim($_POST['estado']) : '';
 $comentario_admin = isset($_POST['comentario_admin']) ? trim($_POST['comentario_admin']) : '';
 $invitados_texto = isset($_POST['invitados']) ? trim($_POST['invitados']) : '';
 
+
+
+
 // 🔒 VERIFICAR PROPIETARIO DE LA VISITA
 $sql_check = "SELECT id_usuario FROM visitas WHERE id_visita = :id_visita";
 $stmt_check = $pdo->prepare($sql_check);
@@ -58,6 +66,7 @@ if (!$visita) {
     header('Location: ' . $URL . '/visitas');
     exit;
 }
+$modificado_por = $usuario['id_usuario'];
 
 // 🔒 VERIFICAR SI PUEDE MODIFICAR ESTE REGISTRO ESPECÍFICO
 if (!$permisos->puedeModificarRegistro('visitas', $visita['id_usuario'])) {
@@ -87,8 +96,10 @@ if (strtotime($fecha_hora_inicio) < strtotime($fecha_actual)) {
     header('Location: '.$URL.'/visitas/update.php?id='.$id_visita);
     exit;
 }
+//Obtener datos para el correo de modificacion de visita
 
 try {
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     // Actualizar visita en la base de datos
     $sentencia = $pdo->prepare("
         UPDATE visitas
@@ -100,7 +111,8 @@ try {
             motivo = :motivo,
             institucion = :institucion,
             estado = :estado,
-            comentario_admin = :comentario_admin
+            comentario_admin = :comentario_admin,
+            modificado_por = :modificado_por
         WHERE id_visita = :id_visita
     ");
 
@@ -114,6 +126,7 @@ try {
     $sentencia->bindParam(':estado', $estado);
     $sentencia->bindParam(':comentario_admin', $comentario_admin);
     $sentencia->bindParam(':id_visita', $id_visita);
+    $sentencia->bindParam(':modificado_por', $modificado_por);
 
     if ($sentencia->execute()) {
         // Eliminar invitados anteriores
@@ -139,10 +152,59 @@ try {
                 ]);
             }
         }
+        // Obtener datos para el correo de modificacion de visita
+        $sql_correo_modificacion_visita = 
+        "SELECT 
+            v.id_visita, 
+            v.motivo, 
+            v.institucion, 
+            solicitante.nombre AS nombre_solicitante, 
+            solicitante.correo AS correo_solicitante, 
+            aprobador.nombre AS nombre_aprobador, 
+            aprobador.correo AS correo_aprobador, 
+            modificador.nombre AS nombre_modificador
+        FROM visitas v
+        JOIN usuarios solicitante ON v.id_usuario = solicitante.id_usuario
+        JOIN usuarios aprobador ON v.aprobador = aprobador.id_usuario
+        LEFT JOIN usuarios modificador ON v.modificado_por = modificador.id_usuario
+        WHERE v.id_visita = :id_visita";
 
+        $queryCorreo = $pdo->prepare($sql_correo_modificacion_visita);
+        $queryCorreo->execute([':id_visita' => $id_visita]);
+
+        $datosCorreo = $queryCorreo->fetch(PDO::FETCH_ASSOC);
+
+        $nombreModificador = $datosCorreo['nombre_modificador'] ?? 'Sistema';
+
+        $asunto = "Visita Modificada: ID " . $datosCorreo['id_visita'];
+
+        $mensaje = "
+        <p>Hola {$datosCorreo['nombre_aprobador']},</p>
+
+        <p>La visita con ID <strong>{$datosCorreo['id_visita']}</strong> ha sido modificada por <strong>{$nombreModificador}</strong>.</p>
+
+        <p><strong>Motivo:</strong> {$datosCorreo['motivo']}</p>
+        <p><strong>Institución:</strong> {$datosCorreo['institucion']}</p>
+
+        <p><strong>Solicitante:</strong> {$datosCorreo['nombre_solicitante']} ({$datosCorreo['correo_solicitante']})</p>
+
+        <p>Por favor, revisa los detalles de la visita en el sistema.</p>
+
+        <p>Saludos,<br>
+        Sistema de Visitas</p>
+    ";
+        if (!enviarCorreo(
+            $datosCorreo['correo_aprobador'],
+            $datosCorreo['nombre_aprobador'],
+            $asunto,
+            $mensaje
+        )) {
+            error_log("Error enviando correo de modificación de visita");
+        }
         $_SESSION['mensaje'] = "Se Actualizó la Visita de Manera Correcta";
         $_SESSION['icono'] = "success";
         header('Location: '.$URL.'/visitas');
+
         exit;
     } else {
         $_SESSION['mensaje'] = "Error, no se pudo Actualizar en la BD";
@@ -153,7 +215,11 @@ try {
 } catch (Exception $e) {
     $_SESSION['mensaje'] = "Error en el servidor: " . $e->getMessage();
     $_SESSION['icono'] = "error";
+        echo $e->getMessage();
     header('Location: '.$URL.'/visitas/update.php?id='.$id_visita);
     exit;
 }
+
+
+
 ?>
