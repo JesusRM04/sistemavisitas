@@ -15,6 +15,7 @@
  * Frecuencia: Cada hora
  */
 
+
 // Solo permitir ejecución por CLI o cron
 if (php_sapi_name() !== 'cli' && !defined('CRON_EXECUTION')) {
     http_response_code(403);
@@ -39,69 +40,33 @@ if (!file_exists($log_dir)) {
 function escribir_log($mensaje) {
     global $log_file;
     $timestamp = date('Y-m-d H:i:s');
-    $log_mensaje = "[$timestamp] $mensaje\n";
-    file_put_contents($log_file, $log_mensaje, FILE_APPEND | LOCK_EX);
-    echo $log_mensaje;
+    file_put_contents($log_file, "[$timestamp] $mensaje\n", FILE_APPEND | LOCK_EX);
 }
 
 try {
     escribir_log("=== INICIO PROCESO MARCAR VISITAS VENCIDAS ===");
     
-    $fecha_actual = date('Y-m-d H:i:s');
-    escribir_log("Fecha/hora actual: $fecha_actual");
-    
-    // Buscar visitas APROBADAS cuya fecha_fin ya pasó
-    $sql_vencidas = "SELECT 
-        v.id_visita,
-        v.fecha_hora,
-        v.fecha_fin,
-        u.nombre AS solicitante,
-        v.motivo
-    FROM visitas v
-    JOIN usuarios u ON v.id_usuario = u.id_usuario
-    WHERE v.estado = 'APROBADO'
-    AND v.fecha_fin < :fecha_actual";
-    
-    $stmt = $pdo->prepare($sql_vencidas);
-    $stmt->execute([':fecha_actual' => $fecha_actual]);
-    $visitas_vencidas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    $total = count($visitas_vencidas);
-    escribir_log("Visitas vencidas encontradas: $total");
-    
-    if ($total == 0) {
-        escribir_log("No hay visitas para marcar como vencidas");
+    //contar cuantas colmnas se van a modificar. 
+    $stmt = $pdo->query("SELECT COUNT(*) FROM visitas WHERE estado = 'APROBADO' AND fecha_fin < NOW()");
+    $total = $stmt->fetchColumn();
+
+    escribir_log("VISITAS VENCIDAS ENCONTRADAS: $total");
+        if($total > 0){
+            $actualizar_vencidas = $pdo -> exec("
+            UPDATE visitas
+            SET estado = 'VENCIDO'
+            WHERE estado = 'APROBADO'
+            AND fecha_fin < NOW()          
+            ");
+            escribir_log("VISITAS VENCIDAS ACTUALIZADAS: $actualizar_vencidas");
+
+        };
+
+        escribir_log("Fin de actualizacion de visitas vencidas");
+        escribir_log("=== RESUMEN ===");
+        escribir_log("Total procesadas: $total");
         escribir_log("=== PROCESO FINALIZADO ===\n");
         exit(0);
-    }
-    
-    // Actualizar estado a VENCIDO
-    $sql_update = "UPDATE visitas 
-                   SET estado = 'VENCIDO'
-                   WHERE id_visita = :id_visita";
-    
-    $stmt_update = $pdo->prepare($sql_update);
-    
-    $actualizadas = 0;
-    foreach ($visitas_vencidas as $visita) {
-        try {
-            $stmt_update->execute([':id_visita' => $visita['id_visita']]);
-            $actualizadas++;
-            
-            $fecha_fin_fmt = date('d/m/Y H:i', strtotime($visita['fecha_fin']));
-            escribir_log("✓ Visita #{$visita['id_visita']} marcada como VENCIDA (fin: $fecha_fin_fmt)");
-            
-        } catch (PDOException $e) {
-            escribir_log("✗ Error al actualizar visita #{$visita['id_visita']}: " . $e->getMessage());
-        }
-    }
-    
-    escribir_log("=== RESUMEN ===");
-    escribir_log("Total procesadas: $total");
-    escribir_log("Actualizadas exitosamente: $actualizadas");
-    escribir_log("=== PROCESO FINALIZADO ===\n");
-    
-    exit(0);
     
 } catch (Exception $e) {
     escribir_log("ERROR: " . $e->getMessage());

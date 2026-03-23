@@ -20,6 +20,7 @@ $sql_visitas = "SELECT
     v.id_usuario,
     u.nombre AS nombre_usuario,
     d.nombre AS nombre_delegado,
+    u2.nombre AS aprobador,
     a.nombre_area AS nombre_area,
     v.fecha_hora,
     v.fecha_fin,
@@ -32,10 +33,11 @@ FROM visitas v
 JOIN usuarios u ON v.id_usuario = u.id_usuario
 JOIN delegados d ON v.id_delegado = d.id_delegado
 JOIN areas a ON v.id_area = a.id_area
+JOIN usuarios u2 ON v.aprobador = u2.id_usuario
 LEFT JOIN invitados i ON v.id_visita = i.id_visita
 WHERE v.estado = 'APROBADO'
 $filtro_alcance
-GROUP BY v.id_visita, v.id_usuario, u.nombre, d.nombre, a.nombre_area, v.fecha_hora, v.fecha_fin, v.motivo, v.institucion, v.estado, v.comentario_admin
+GROUP BY v.id_visita, v.id_usuario, u.nombre, d.nombre, a.nombre_area, v.fecha_hora, v.fecha_fin, v.motivo, v.institucion, v.estado, v.comentario_admin, u2.nombre
 ORDER BY v.fecha_hora DESC";
 
 $query_visitas = $pdo->prepare($sql_visitas);

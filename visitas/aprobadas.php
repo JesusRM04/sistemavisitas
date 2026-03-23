@@ -51,7 +51,7 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                                        <th><center>Fecha</center></th>
                                        <th><center>Fecha Fin</center></th>
                                        <th><center>Motivo</center></th>
-                                       <th><center>Estado</center></th>
+                                       <th><center>Aprobador</center></th>
                                        <th><center>Visitantes</center></th>
                                        <th><center>Descripción Vehículo</center></th>
                                        <th><center>Acciones</center></th>
@@ -79,7 +79,7 @@ include ('../app/controllers/visitas/visitas_aprobadas.php');
                                            <td><center><?php echo $visitas_dato['fecha_hora'];?></center></td>
                                            <td><center><?php echo $visitas_dato['fecha_fin'];?></center></td>
                                            <td><?php echo $visitas_dato['motivo'];?></td>
-                                           <td><center><span class="badge badge-success"><?php echo $visitas_dato['estado'];?></span></center></td>
+                                           <td><center><?php echo $visitas_dato['aprobador'];?></span></center></td>
                                            <td>
                                                 <center>
                                                     <?php if (!empty($visitas_dato['invitados'])): ?>
