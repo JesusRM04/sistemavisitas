@@ -1,5 +1,6 @@
 <?php
 include('../../config.php');
+include_once __DIR__ . '/mail_controller.php';
 
 session_start();
 
@@ -72,10 +73,19 @@ if($sentencia->execute()) {
             ]);
         }
     }
+
+    try {
+        creation_mail($id_visita);
+    } catch (Exception $e) {
+        error_log("Error enviando correo de creación de visita: " . $e->getMessage());
+    }
     
     $_SESSION['mensaje'] = "Se Registró la Visita de Manera Correcta";
     $_SESSION['icono']   = "success";
     header('Location: '.$URL.'/visitas');
+
+
+
     exit;
 } else {
     $_SESSION['mensaje'] = "Error, NO se pudo Registrar la Visita en la BD";
