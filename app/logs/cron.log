@@ -1,0 +1,5 @@
+Error de conexión: SQLSTATE[08006] [7] connection to server at "localhost" (::1), port 5432 failed: FATAL:  el sistema de base de datos está iniciándosePHP Warning:  Undefined variable $pdo in /var/www/html/sistemavisitas/app/controllers/visitas/cron_marcar_vencidas.php on line 50
+PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /var/www/html/sistemavisitas/app/controllers/visitas/cron_marcar_vencidas.php:50
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/sistemavisitas/app/controllers/visitas/cron_marcar_vencidas.php on line 50
