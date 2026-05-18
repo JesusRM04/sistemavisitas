@@ -21,7 +21,7 @@ try {
         ON v.id_usuario = u.id_usuario
     WHERE DATE(v.fecha_hora) = CURRENT_DATE + INTERVAL '1 day'
     AND v.estado = 'APROBADO'
-    AND v.recordatorio_manana_enviado = FALSE
+    AND v.notificacion_visitas = FALSE
     ";
 
     $stmt = $pdo->query($sql);
@@ -59,7 +59,7 @@ try {
 
             $update = $pdo->prepare("
                 UPDATE visitas
-                SET recordatorio_manana_enviado = TRUE
+                SET notificacion_visitas = TRUE
                 WHERE id_visita = :id_visita
             ");
 
