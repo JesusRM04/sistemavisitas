@@ -19,6 +19,7 @@ $sql_visitas = "SELECT
     d.nombre AS nombre_delegado,
     a.nombre_area AS nombre_area,
     v.fecha_hora,
+    v.fecha_fin,
     v.motivo,
     v.institucion,
     v.estado,
@@ -31,7 +32,7 @@ JOIN areas a ON v.id_area = a.id_area
 LEFT JOIN invitados i ON v.id_visita = i.id_visita
 WHERE EXTRACT(MONTH FROM v.fecha_hora) = :mes 
   AND EXTRACT(YEAR FROM v.fecha_hora) = :anio
-GROUP BY v.id_visita, u.nombre, d.nombre, a.nombre_area, v.fecha_hora, v.motivo, v.institucion, v.estado, v.comentario_admin
+GROUP BY v.id_visita, u.nombre, d.nombre, a.nombre_area, v.fecha_hora, v.fecha_fin, v.motivo, v.institucion, v.estado, v.comentario_admin
 ORDER BY v.fecha_hora DESC";
 
 $query_visitas = $pdo->prepare($sql_visitas);
@@ -207,8 +208,8 @@ $meses = [
                                     <thead>
                                         <tr>
                                             <th><center>Nro</center></th>
-                                            <th><center>Fecha</center></th>
-                                            <th><center>Hora</center></th>
+                                            <th><center>Fecha Inicio</center></th>
+                                            <th><center>Fecha Fin</center></th>
                                             <th><center>Solicitante</center></th>
                                             <th><center>Institución</center></th>
                                             <th><center>Visitantes</center></th>
@@ -224,8 +225,17 @@ $meses = [
                                         $contador = 0;
                                         foreach ($visitas_datos as $visita) {
                                             $contador++;
-                                            $fecha_formateada = date('d/m/Y', strtotime($visita['fecha_hora']));
-                                            $hora_formateada = date('H:i', strtotime($visita['fecha_hora']));
+                                            $fecha_inicio = date(
+                                                'd/m/Y H:i',
+                                                strtotime($visita['fecha_hora'])
+                                            );
+
+                                            $fecha_fin = !empty($visita['fecha_fin'])
+                                                ? date(
+                                                    'd/m/Y H:i',
+                                                    strtotime($visita['fecha_fin'])
+                                                )
+                                                : 'No definida';
                                             $institucion = isset($visita['institucion']) ? $visita['institucion'] : 'No especificado';
                                             
                                             // Color del badge según estado
@@ -235,8 +245,8 @@ $meses = [
                                         ?>
                                             <tr>
                                                 <td><center><?php echo $contador; ?></center></td>
-                                                <td><center><?php echo $fecha_formateada; ?></center></td>
-                                                <td><center><?php echo $hora_formateada; ?></center></td>
+                                                <td><center><?php echo $fecha_inicio; ?></center></td>
+                                                <td><center><?php echo $fecha_fin; ?></center></td>
                                                 <td><?php echo $visita['nombre_usuario']; ?></td>
                                                 <td><?php echo $institucion; ?></td>
                                                 <td><?php echo $visita['invitados'] ? $visita['invitados'] : 'Sin invitados'; ?></td>
