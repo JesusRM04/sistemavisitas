@@ -35,6 +35,7 @@ try {
         $puede_crear = isset($acciones['crear']) ? true : false;
         $puede_editar = isset($acciones['editar']) ? true : false;
         $puede_eliminar = isset($acciones['eliminar']) ? true : false;
+        $puede_aprobar = isset($acciones['aprobar']) ? true : false;
         $alcance = isset($acciones['alcance']) ? $acciones['alcance'] : 'todos';
         
         // Solo insertar si tiene al menos permiso de ver

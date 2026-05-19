@@ -8,9 +8,9 @@ $sql_delegados = "SELECT
     correo AS correo, 
     ext AS extension
 FROM delegados
-WHERE id_delegado = '$id_delegado_get' ";
+WHERE id_delegado = :id_delegado";
 $query_delegados = $pdo->prepare($sql_delegados);
-$query_delegados->execute();
+$query_delegados->execute([':id_delegado' => $id_delegado_get]);
 $delegados_datos = $query_delegados->fetchAll(PDO::FETCH_ASSOC);
 
 foreach ($delegados_datos as $delegados_dato) {

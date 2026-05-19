@@ -70,11 +70,20 @@ $visitas_aprobadas = obtener_visitas_aprobadas($pdo, $permisos);
   <div class="content">
     <div class="container-fluid">
       <div class="row">
+        <?php
+        $color_toggle = true;
+
+        function colorCard(&$color_toggle){
+            $color = $color_toggle ? '#611232' : '#b89457';
+            $color_toggle = !$color_toggle;
+            return $color;
+        }
+        ?>
 
         <!-- Tarjeta Usuarios -->
         <?php if ($rol_sesion == 'ADMINISTRADOR') { ?>
           <div class="col-lg-3 col-6">
-            <div class="small-box" style="background-color: #611232;">
+            <div class="small-box" style="background-color: <?php echo colorCard($color_toggle); ?>; color:white">
               <div class="inner" style="color: white">
                 <?php
                 $contador_de_usuarios = 0;
@@ -103,7 +112,7 @@ $visitas_aprobadas = obtener_visitas_aprobadas($pdo, $permisos);
         <!-- Tarjeta Roles -->
         <?php if ($rol_sesion == 'ADMINISTRADOR') { ?>
           <div class="col-lg-3 col-6">
-            <div class="small-box" style="background-color: #b89457; color: white">
+            <div class="small-box" style="background-color:<?php echo colorCard($color_toggle); ?>; color:white">
               <div class="inner">
                 <?php
                 $contador_de_roles = 0;
@@ -129,7 +138,7 @@ $visitas_aprobadas = obtener_visitas_aprobadas($pdo, $permisos);
         <!-- Tarjeta Áreas -->
         <?php if ($rol_sesion == 'ADMINISTRADOR') { ?>
           <div class="col-lg-3 col-6">
-            <div class="small-box" style="background-color: #611232; color: white">
+            <div class="small-box" style="background-color: <?php echo colorCard($color_toggle); ?>; color:white">
               <div class="inner">
                 <?php
                 $contador_de_areas = 0;
@@ -154,7 +163,7 @@ $visitas_aprobadas = obtener_visitas_aprobadas($pdo, $permisos);
 
         <!-- Tarjeta Visitas -->
         <div class="col-lg-3 col-6">
-          <div class="small-box" style="background-color: #b89457; color: white">
+          <div class="small-box" style="background-color:<?php echo colorCard($color_toggle); ?>; color:white">
             <div class="inner">
               <?php
                 $contador_de_visitas = 0;
@@ -178,7 +187,7 @@ $visitas_aprobadas = obtener_visitas_aprobadas($pdo, $permisos);
 
         <!-- Tarjeta Visitas Aprobadas -->
         <div class="col-lg-3 col-6">
-          <div class="small-box" style="background-color:#b89457; color: white">
+          <div class="small-box" style="background-color:<?php echo colorCard($color_toggle); ?>; color:white">
             <div class="inner">
               <?php
                 $contador_de_visitas_aprobadas = count($visitas_aprobadas);
@@ -201,7 +210,7 @@ $visitas_aprobadas = obtener_visitas_aprobadas($pdo, $permisos);
         <!-- Tarjeta Delegados -->
         <?php if ($rol_sesion == 'ADMINISTRADOR') { ?>
           <div class="col-lg-3 col-6">
-            <div class="small-box" style="background-color: #611232; color: white">
+            <div class="small-box" style="background-color:<?php echo colorCard($color_toggle); ?>; color:white">
               <div class="inner">
                 <?php
                 $contador_de_delegados = 0;
@@ -226,7 +235,7 @@ $visitas_aprobadas = obtener_visitas_aprobadas($pdo, $permisos);
         
                 <!-- Tarjeta Reportes -->
               <div class="col-lg-3 col-6">
-                <div class="small-box" style="background-color: #611232; color: white">
+                <div class="small-box" style="background-color: <?php echo colorCard($color_toggle); ?>; color:white">
                   <div class="inner">
                     <?php
                       // Contar visitas del mes actual

@@ -39,34 +39,35 @@
 <body class="hold-transition sidebar-mini">
   <div class="wrapper">
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-      <!-- navbar links parte izquierda -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+
+      <!-- izquierda -->
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Inicio</a>
-        </li>
+          <li class="nav-item">
+              <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+                  <i class="fas fa-bars"></i>
+              </a>
+          </li>
+
+          <li class="nav-item d-none d-sm-inline-block">
+              <a href="#" class="nav-link">Inicio</a>
+          </li>
       </ul>
 
+      <!-- derecha -->
+      <ul class="navbar-nav ml-auto">
 
-        <!-- Mensajes Dropdown Menu -->
-        <li class="nav-item dropdown">
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="#" class="dropdown-item">
-                 
-        </li>
-        
-        <!-- Pantalla Completa -->
-        <li class="nav-item">
-          <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-            <i class="fas fa-expand-arrows-alt"></i>
-          </a>
-        </li>
+          <!-- Pantalla completa -->
+          <li class="nav-item">
+              <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                  <i class="fas fa-expand-arrows-alt"></i>
+              </a>
+          </li>
+
       </ul>
-    </nav>
-    <!-- Fin Navbar -->
+
+  </nav>
+  <!-- Fin Navbar -->
 
     <!-- Menú Lateral Principal (izquierdo) Contenido (Apartados) -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -195,10 +196,12 @@
                 </li>
                 
                 <?php endforeach; ?>
-                
+                <?php
+                $color_cerrar = $color_toggle ? '#611232' : '#b89457';
+                ?>
                 <!-- Cerrar Sesión -->
                 <li class="nav-item">
-                    <a href="<?php echo $URL; ?>/app/controllers/login/cerrar_sesion.php" class="nav-link" style="background-color: #b89457;">
+                    <a href="<?php echo $URL; ?>/app/controllers/login/cerrar_sesion.php" class="nav-link" style="background-color:<?php echo $color_cerrar; ?>;">
                         <i class="nav-icon fas fa-door-closed" style="color: white;"></i>
                         <p style="color: white;">Cerrar Sesión</p>
                     </a>

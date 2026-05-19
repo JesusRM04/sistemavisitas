@@ -203,8 +203,8 @@ $(document).ready(function() {
     $('input[type="checkbox"]').not('.check-todos').on('change', function() {
         var modulo = $(this).data('modulo');
         var total = $('input[data-modulo="' + modulo + '"]').not('.check-todos').length;
-        var checked = $('input[data-modulo="' + modulo + '"]').not('.check-todos'):checked').length;
-        
+        var checked = $('input[data-modulo="' + modulo + '"]:checked').not('.check-todos').length;
+
         $('.check-todos[data-modulo="' + modulo + '"]').prop('checked', total === checked);
     });
 });

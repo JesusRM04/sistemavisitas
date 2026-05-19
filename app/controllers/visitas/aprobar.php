@@ -23,7 +23,7 @@ $permisos = new PermisosHelper($pdo, $usuario['id_rol'], $usuario['id_usuario'])
 
 
 // 🔒 VERIFICAR PERMISO DE EDITAR (para aprobar se necesita poder editar)
-if (!$permisos->puedeEditar('visitas')) {
+if (!$permisos->puedeAprobar('visitas')) {
     $_SESSION['mensaje'] = "No tienes permiso para aprobar visitas";
     $_SESSION['icono'] = "error";
     header('Location: ' . $URL . '/visitas');
