@@ -44,33 +44,27 @@ function escribir_log($mensaje) {
 }
 
 try {
-    escribir_log("=== INICIO PROCESO MARCAR VISITAS VENCIDAS ===");
-    
-    //contar cuantas colmnas se van a modificar. 
-    $stmt = $pdo->query("SELECT COUNT(*) FROM visitas WHERE estado = 'APROBADO' AND fecha_fin < NOW()");
-    $total = $stmt->fetchColumn();
 
-    escribir_log("VISITAS VENCIDAS ENCONTRADAS: $total");
-        if($total > 0){
-            $actualizar_vencidas = $pdo -> exec("
-            UPDATE visitas
-            SET estado = 'VENCIDO'
-            WHERE estado = 'APROBADO'
-            AND fecha_fin < NOW()          
-            ");
-            escribir_log("VISITAS VENCIDAS ACTUALIZADAS: $actualizar_vencidas");
+    $actualizar_vencidas = $pdo->exec("
+        UPDATE visitas
+        SET estado = 'VENCIDO'
+        WHERE estado = 'APROBADO'
+        AND fecha_fin < NOW()
+    ");
 
-        };
+    // Solo escribir si realmente cambió algo
+    if ($actualizar_vencidas > 0) {
 
-        escribir_log("Fin de actualizacion de visitas vencidas");
-        escribir_log("=== RESUMEN ===");
-        escribir_log("Total procesadas: $total");
-        escribir_log("=== PROCESO FINALIZADO ===\n");
-        exit(0);
-    
+        escribir_log(
+            "Se marcaron $actualizar_vencidas visitas como VENCIDO"
+        );
+    }
+
+    exit(0);
+
 } catch (Exception $e) {
+
     escribir_log("ERROR: " . $e->getMessage());
-    escribir_log("=== PROCESO FINALIZADO CON ERRORES ===\n");
     exit(1);
 }
 ?>

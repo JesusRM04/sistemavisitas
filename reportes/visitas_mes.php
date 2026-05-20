@@ -43,7 +43,7 @@ $visitas_datos = $query_visitas->fetchAll(PDO::FETCH_ASSOC);
 $total_visitas = count($visitas_datos);
 $pendientes = 0;
 $aprobadas = 0;
-$rechazadas = 0;
+$vencidas = 0;
 
 foreach ($visitas_datos as $visita) {
     switch ($visita['estado']) {
@@ -53,8 +53,8 @@ foreach ($visitas_datos as $visita) {
         case 'APROBADO':
             $aprobadas++;
             break;
-        case 'RECHAZADO':
-            $rechazadas++;
+        case 'VENCIDO':
+            $vencidas++;
             break;
     }
 }
@@ -177,7 +177,17 @@ $meses = [
                         </div>
                     </div>
                 </div>
-                
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3><?php echo $vencidas; ?></h3>
+                            <p>Vencidas</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Tabla de Visitas -->
