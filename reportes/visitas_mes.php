@@ -177,17 +177,7 @@ $meses = [
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3><?php echo $rechazadas; ?></h3>
-                            <p>Rechazadas</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-times-circle"></i>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
 
             <!-- Tabla de Visitas -->
