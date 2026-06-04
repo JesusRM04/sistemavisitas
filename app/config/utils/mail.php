@@ -16,12 +16,12 @@ function enviarCorreo($correoDestino, $destinatario, $asunto, $mensaje) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = $_ENV['USERNAME_STMP'];
+        $mail->Username = $_ENV['USERNAME_SMTP'];
         $mail->Password = $_ENV['PASSWORD_MAIL'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = $_ENV['PORT_MAIL'];
 
-        $mail->setFrom($_ENV['USERNAME_STMP'], 'Sistema de visitas');
+        $mail->setFrom($_ENV['USERNAME_SMTP'], 'Sistema de visitas');
         $mail->addAddress($correoDestino, $destinatario);
 
         $mail->isHTML(true);
